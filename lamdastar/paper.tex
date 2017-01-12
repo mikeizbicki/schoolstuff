@@ -1,0 +1,401 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage[round]{natbib}   % omit 'round' option if you prefer square brackets
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareMathOperator*{\vecspan}{span}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\erf}{erf}
+
+\DeclareMathOperator*{\tr}{tr}
+\DeclareMathOperator*{\dd}{d}
+
+\newcommand{\deriv}[1]{\frac{\dd}{\dd{#1}}}
+\newcommand{\pderiv}[1]{\frac{\partial}{\partial{#1}}}
+\newcommand{\gderiv}[1]{\nabla_{{#1}}}
+\newcommand{\gderivII}[1]{\nabla_{{#1}}^2}
+
+\DeclareMathOperator*{\Eop}{\mathbb{E}}
+\newcommand{\E}[1]{\ensuremath{\Eop\left[{#1}\right]}}
+
+\DeclareMathOperator*{\probop}{Pr}
+\newcommand{\prob}[1]{\ensuremath{\probop\left[{#1}\right]}}
+
+\newcommand{\proj}[1]{\ensuremath{\pi}_{#1}}
+\newcommand{\trans}[1]{\ensuremath{{#1}^{\mathsf{T}}}}
+\newcommand{\abs}[1]{\left\lvert{#1}\right\rvert}
+\newcommand{\ltwo}[1]{\left\lVert{#1}\right\rVert}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\zero}{\mathbf{0}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\ident}{I}
+
+\newcommand{\ridge}[1]{{#1}^{\text{ridge}}}
+
+\newcommand{\w}{\mathbf{w}}
+\newcommand{\wstar}{\w^*}
+\newcommand{\whatl}{\hat\w_\lambda}
+\newcommand{\whatls}{\hat\w_{\lhat}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\lhat}{\hat\lambda}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\Zt}{\Z_t}
+\newcommand{\Zv}{\Z_v}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Xt}{\X_t}
+\newcommand{\Xv}{\X_v}
+\newcommand{\matX}{X}
+\newcommand{\matXt}{\matX_t}
+\newcommand{\matXv}{\matX_v}
+\newcommand{\y}{y}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\Yt}{\Y_t}
+\newcommand{\Yv}{\Y_v}
+\newcommand{\matY}{Y}
+\newcommand{\matYt}{\matY_t}
+\newcommand{\matYv}{\matY_v}
+
+\newcommand{\loss}{\ell}
+\newcommand{\reg}{r}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{amsthm}
+\makeatletter
+\def\th@definition{%
+  \thm@notefont{}% same as heading font
+  \normalfont % body font
+}
+\makeatother
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+\newtheorem{defn}{Definition}
+\newtheorem{note}{Note}
+\newtheorem{example}{Example}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{filecontents}{paper.bib}
+
+@article{gould2016differentiating,
+  title={On Differentiating Parameterized Argmin and Argmax Problems with Application to Bi-level Optimization},
+  author={Gould, Stephen and Fernando, Basura and Cherian, Anoop and Anderson, Peter and Cruz, Rodrigo Santa and Guo, Edison},
+  journal={arXiv preprint arXiv:1607.05447},
+  year={2016}
+
+}
+\end{filecontents}
+\immediate\write18{bibtex paper}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+%\begin{equation}
+%\wstar 
+%= 
+%\argmin_{\w\in\W} \int \loss(\w,\x) \dd \x
+%\end{equation}
+
+\section{Introduction}
+The goal is to directly optimize for the optimal regularization strength $\lhat$ and avoid the need for cross validation.
+Let $\Z$ be a dataset of i.i.d.\ data points. %distributed according to $\D^n$.
+We break up $\Z$ into a training set $\Zt$ and validation set $\Zv$ such that $\Zt \cup \Zv = \Z$.
+We then use regularized loss minimization to estimate a parameter vector
+\begin{equation}\label{eq:whatl}
+\whatl 
+= 
+\argmin_{\w\in\W} \sum_{\z\in\Zt} \loss(\w,\z) + \lambda \reg(\w)
+.
+\end{equation}
+The resulting parameter vector $\whatl$ depends on a hyperparameter $\lambda$.
+This hyperparameter should be set to minimize the following equation.
+\begin{equation}\label{eq:lhat}
+\lhat 
+= 
+\argmin_{\lambda\in\R} \sum_{\z\in\Zv} \loss(\whatl,\z)
++
+\gamma\ltwo{\lambda}^2
+.
+\end{equation}
+This minimization is usually done in an ad-hoc manner via cross validation and grid search.
+%Then the final result is $\whatls$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Warm up: Ridge Regression}
+
+In ridge regression, the space of data points is decomposed as $\Z=\X\times\Y$.
+The loss function $\loss(\w,(\x,\y)) = \abs{\trans\w\x-\y}^2$,
+and the regularization function $\reg(\w)=\ltwo{\w}^2$.
+Substituting into \eqref{eq:whatl} gives
+\begin{equation}\label{eq:ridgewhatl}
+\ridge\whatl
+= 
+\argmin_{\w\in\W} \sum_{(\x,\y)\in\Zt} \abs{\trans\w\x-\y}^2 + \lambda \ltwo{\w}^2
+.
+\end{equation}
+It is common to let $\matXt$ be the $n\times d$ matrix of data points in $\Xt$ and $\matYt$ to be the $n\times1$ matrix of corresponding response variables in $\Yt$.
+Then \eqref{eq:ridgewhatl} can be rewritten as
+\begin{align}\label{eq:ridgewhatlsoln}
+\ridge\whatl
+=
+\argmin_{\w\in\W} \ltwo{\matXt\w-\matYt}^2 + \lambda \ltwo{\w}^2
+.
+\end{align}
+For a fixed $\lambda$, \eqref{eq:ridgewhatlsoln} has the closed form solution
+\begin{equation}\label{eq:ridgewhatlsoln}
+\ridge\whatl
+=
+\left(
+    \trans\matXt\matXt+\lambda\ident
+\right)^{-1}
+\trans\matXt\matYt
+.
+\end{equation}
+%Because $\ridge\whatl$ has a closed form equation,
+%we can easily take its derivative with respect to $\lambda$.
+%Doing so gives
+%\begin{equation}\label{eq:derivlambdaridgewhatl}
+%\deriv\lambda\ridge\whatl
+%=
+%-\left(
+    %\trans\matXt\matXt+\lambda\ident
+%\right)^{-2}
+%\trans\matXt\matYt
+%.
+%\end{equation}
+We now rewrite the equation for the optimal hyperparameter \eqref{eq:lhat} as
+\begin{align}\label{eq:ridgelhat}
+\ridge\lhat 
+&= 
+\argmin_{\lambda\in\R}\ltwo{\matXv\ridge\whatl-\matYv}^2 
++
+\gamma\lambda^2
+\\
+&=
+\argmin_{\lambda\in\R}
+\ltwo{\matXv
+\left(
+    \trans\matXt\matXt+\lambda\ident
+\right)^{-1}
+\trans\matXt\matYt
+-\matYv}^2 
++
+\gamma\lambda^2
+.
+\end{align}
+Unlike $\ridge\whatl$, $\ridge\lhat$ does not appear to have a closed form solution.
+The objective is neither convex nor guaranteed to have a single minima.
+So we turn to numerical optimization procedures.
+
+%\begin{align}
+%f(\lambda)
+%&=
+%\ltwo{\matXv
+%\left(
+    %\trans\matXt\matXt+\lambda\ident
+%\right)^{-1}
+%\trans\matXt\matYt
+%-\matYv}^2 
+%+
+%\gamma\lambda^2
+%\\
+%f'(\lambda)
+%&=
+%\trans\matXv
+%\left(
+    %\matXv
+    %\left(
+        %\trans\matXt\matXt+\lambda\ident
+    %\right)^{-1}
+    %\trans\matXt\matYt
+    %-\matYv
+%\right)
+%\left(
+    %\trans\matXt\matXt+\lambda\ident
+%\right)^{-2}
+%\trans\matXt\matYt
+%- \gamma\lambda
+%\end{align}
+%
+%Notice that \eqref{eq:ridgelhat} uses the validation matrices $\matXv$ and $\matYv$ instead of the training matrices.
+%To solve for $\ridge\lhat$, we set the derivative inside the $\argmin$ to zero.
+%\begin{align}
+%0
+%&=
+%\deriv\lambda
+%\left(
+    %\ltwo{\matXv\whatl-\matYv}^2 
+    %+
+    %\gamma\lambda^2
+%\right)
+%\\
+%&=
+    %\trans\matXv(\matXv\whatl-\matYv)
+%\left(
+    %\deriv\lambda\whatl
+%\right)
+%+ \gamma\lambda
+%\\
+%&=
+%\trans\matXv
+%\left(
+    %\matXv
+    %\left(
+        %\trans\matXt\matXt+\lambda\ident
+    %\right)^{-1}
+    %\trans\matXt\matYt
+    %-\matYv
+%\right)
+%\left(
+    %\trans\matXt\matXt+\lambda\ident
+%\right)^{-2}
+%\trans\matXt\matYt
+%- \gamma\lambda
+%.
+%\end{align}
+%and the partial derivative of the loss
+%\begin{align}
+%\sum_{\z\in\Zv} \pderiv{\whatl} \loss(\whatl,\z) 
+%&=
+%\pderiv{\whatl}
+%\ltwo{\matXv\whatl - \matYv}^2
+%\\
+%&=
+%\trans\matXv\left(\matXv\whatl-\matYv\right)
+%\\
+%&=
+%\trans\matXv\matXv\whatl-\trans\matXv\matYv
+%\\
+%&=
+%\trans\matXv\matXv
+%\left(
+    %\trans\matXt\matXt+\lambda\ident
+%\right)^{-1}
+%\trans\matXt\matYt
+%-\trans\matXv\matYv
+%.
+%\label{eq:pderivridgeloss}
+%\end{align}
+%Substituting \eqref{eq:derivlambdaridgewhatl} and \eqref{eq:pderivridgeloss} into \eqref{eq:lhat0} gives
+%\begin{equation}\label{eq:ridgelhat}
+%0
+%=
+%\left(
+    %\trans\matXv\matXv
+    %\left(
+        %\trans\matXt\matXt+\lambda\ident
+    %\right)^{-1}
+    %\trans\matXt\matYt
+    %-\trans\matXv\matYv
+%\right)
+%\left(
+    %\trans\matXt\matXt+\lambda\ident
+%\right)^{-2}
+%\trans\matXt\matYt
+%.
+%\end{equation}
+%A numerical optimizer is needed to solve for $\lambda$.
+%Observe that in the limit as $t,v\to\infty$, the covariance matrices $\trans\matXv\matXv=\trans\matXt\matXt$ with probability 1.
+%Therefore, a reasonable warm start for the optimization of $\lambda$ would set
+%\begin{equation}
+%\trans\matXv\matXv \approx \trans\matXt\matXt + \lambda\ident
+%.
+%\end{equation}
+%To solve for $\lambda$, we need to pick an appropriate norm for the approximation.
+%The trace norm seems reasonable.
+%This gives
+%\begin{equation}
+%\lambda_0 = \frac{\tr(\trans\matXv\matXv) - \tr(\trans\matXt\matXt)}{d} 
+%.
+%\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Problem Setting}
+
+To solve \eqref{eq:lhat} analytically, we set the derivative inside the $\argmin$ to zero and solve for $\lambda$.
+This gives the equation
+\begin{equation}\label{eq:lhat0}
+0
+=
+\deriv{\lambda} \sum_{\z\in\Zv} \loss(\whatl,\z)
+=
+\sum_{\z\in\Zv} \pderiv{\whatl} \loss(\whatl,\z) \deriv{\lambda}\whatl
+.
+\end{equation}
+To solve \eqref{eq:lhat0}, we need to calculate $\deriv{\lambda}\whatl$. 
+This is the derivative of the $\argmin$ function.
+We appeal to the following theorem.
+
+\begin{theorem}[\cite{gould2016differentiating}]
+Let $f:\R\times\R^n \to \R$ be a twice differentiable function.
+Let $g(x) = \argmin_{y\in\R^n} f(x,y)$.
+Then,
+\begin{equation}
+\deriv{x}g(x)
+=
+\left(
+    \gderivII{y} f(x,y)
+\right)^{-1}
+\left(
+    \pderiv{x}\gderiv{y} f(x,y)
+\right)
+.
+\end{equation}
+\end{theorem}
+
+Applying this theorem to $\deriv\lambda\whatl$ gives
+\begin{align}
+\deriv{\lambda}\whatl
+%&=
+%\left(
+    %\gderivII\w \left(\sum_{\z\in\Zv}\loss(\w,\z)+\lambda\reg(\w)\right)
+%\right)^{-1}
+%%\left(
+    %\pderiv{\lambda}\gderiv{\w}\left(\sum_{\z\in\Zv}\loss(\w,\z)+\lambda\reg(\w) \right)
+%%\right)
+%\\
+&=
+\label{eq:ddwhatl}
+\left(
+    \sum_{\z\in\Zv}\gderivII\w \loss(\w,\z)+\lambda\gderivII\w \reg(\w)
+\right)^{-1}
+%\left(
+    \lambda\gderiv{\w}\reg(\w) 
+%\right)
+.
+\end{align}
+Substituting \eqref{eq:ddwhatl} into \eqref{eq:lhat0} yields
+\begin{equation}\label{eq:lhatsub}
+0
+=
+\left(
+    \sum_{\z\in\Zv} \pderiv{\whatl} \loss(\whatl,\z) 
+\right)
+\left(
+    \sum_{\z\in\Zv}\gderivII\whatl \loss(\whatl,\z)+\lambda\gderivII\whatl \reg(\whatl)
+\right)^{-1}
+%\left(
+    \lambda\gderiv{\whatl}\reg(\whatl) 
+.
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\bibliographystyle{plainnat}
+\bibliography{paper}
+
+\end{document}
+

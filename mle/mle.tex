@@ -1,0 +1,598 @@
+\documentclass{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{amsthm}
+\makeatletter
+\def\th@definition{%
+  \thm@notefont{}% same as heading font
+  \normalfont % body font
+}
+\makeatother
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}
+\newtheorem{defn}{Definition}
+\newtheorem{note}{Note}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareMathOperator*{\vecspan}{span}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\erf}{erf}
+
+\DeclareMathOperator*{\tr}{tr}
+
+\DeclareMathOperator*{\Eop}{\mathbb{E}}
+\newcommand{\E}[1]{\ensuremath{\Eop\left[{#1}\right]}}
+
+\DeclareMathOperator*{\probop}{Pr}
+\newcommand{\prob}[1]{\ensuremath{\probop\left[{#1}\right]}}
+
+\newcommand{\proj}[1]{\ensuremath{\pi}_{#1}}
+
+\newcommand{\trans}[1]{\ensuremath{{#1}^{\mathsf{T}}}}
+\newcommand{\comp}[1]{\ensuremath{{#1}^\bot}}
+\newcommand{\zero}{\mathbf{0}}
+\newcommand{\w}{\mathbf{w}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\uu}{\mathbf{u}}
+\newcommand{\law}{\ensuremath{\xrightarrow{L}}}
+\newcommand{\normal}[2]{\ensuremath{\mathcal{N}\left({{#1}},{{#2}}\right)}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{filecontents}{paper.bib}
+@article{hsu2012tail,
+  title={A tail inequality for quadratic forms of subgaussian random vectors},
+  author={Hsu, Daniel and Kakade, Sham M and Zhang, Tong and others},
+  journal={Electron. Commun. Probab},
+  volume={17},
+  number={52},
+  pages={1--6},
+  year={2012}
+}
+
+@article{dasgupta2003elementary,
+  title={An elementary proof of a theorem of Johnson and Lindenstrauss},
+  author={Dasgupta, Sanjoy and Gupta, Anupam},
+  journal={Random Structures \& Algorithms},
+  volume={22},
+  number={1},
+  pages={60--65},
+  year={2003},
+  publisher={Wiley Online Library}
+}
+
+\end{filecontents}
+\immediate\write18{bibtex paper}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%\begin{lemma}
+%Given the $L_2$ regularized problem
+%\begin{equation}
+%\hat\theta = \argmax_\theta \sum_{x\in X} f(x;\theta) + \lambda|\theta|_2
+%\end{equation}
+%We have that
+%\begin{equation}
+%\sqrt{n}(\hat\theta -\theta_0)
+%\end{equation}
+%\end{lemma}
+
+\section {CLT for Logistic Regression}
+\begin{defn}
+If $X_n$ is a sequence of random variables with cdfs $F_n$,
+$X$ is a random variable with cdf $F$,
+and $F_n(x) \to F(x)$ for all points $x$ where $F$ is continuous,
+then $X_n$ \emph{converges in law} to $X$;
+in symbols, $X_n \law X$.
+\end{defn}
+
+\begin{theorem}
+Let $X_1,X_2,...,X_n$ be iidrv with density $f_\theta(x)$ satisfying the following conditions:
+\begin{enumerate}
+\item
+The distributions $P_\theta$ are distinct.
+That is, $P_{\theta_1} = P_{\theta_2}$ implies that $\theta_1=\theta_2$.
+\item
+The parameter space $\theta\in\Omega$ is open.
+\item
+The density $f_\theta(x)$ is continuous in $x$.
+\item
+The set $A = \{x : f_\theta(x) > 0\}$ is independent of $\theta$.
+\item
+For all $x\in A$, $f_\theta(x)$ is three times differentiable with respect to $\theta$,
+and the third derivative is continuous.
+The corresponding derivatives of the integral $\int f_\theta(x)dx$ can be obtained by differentiating under the integral sign.
+\item
+If $\theta_0$ denotes the true value of $\theta$,
+there exists a positive number $c(\theta_0)$ and a function $M_{\theta_0}(x)$ such that
+\begin{equation}
+\left|\frac{\partial^3}{\partial\theta^3} \log f_\theta(x)\right|
+\le
+M_{\theta_0}(x)
+~\text{for all}~
+x \in A, |\theta-\theta_0| < c(\theta_0)
+\end{equation}
+and
+\begin{equation}
+E_{\theta_0} [ M_{\theta_0}(X)] < \infty
+\end{equation}
+\end{enumerate}
+Then any consistent sequence $\hat\theta_n = \hat\theta(X_1,...,X_n)$ of roots of the likelihood equation satisfies
+\begin{equation}
+%\sqrt{n}(\hat\theta - \theta_0)
+\hat\theta
+\law
+\theta_0 + \frac{1}{\sqrt{n}}\normal{0}{I^{-1}(\theta_0)}
+\end{equation}
+where $I(\theta_0)$ is the Fisher information.
+\end{theorem}
+
+Logistic regression with the $L_2$ loss satisfies conditions 1-6 above.
+The $L_1$ loss does not satisfy the conditions above because it is not everywhere differentiable.
+To work around this limitation, define the function
+\begin{equation}
+R_\alpha(\theta) = \sum_i\sqrt{\alpha \theta_i^2 + 1}-1
+\end{equation}
+where $\theta_i$ is the $i$th component of $\theta$.
+This function is three times differentiable,
+and it converges to the $L_1$ norm as $\alpha\to\infty$.
+We can now perform the analysis using the $R_\alpha$ norm as an arbitrarily close approximation to the $L_1$ norm.
+
+\section{}
+\begin{lemma}[\cite{hsu2012tail}]
+\label{lemma:hsu}
+Let $A \in \mathbb{R}^{n\times n}$ be a matrix,
+and let $\Sigma = \trans A A$.
+Let $x=(x_1,...,x_d)$ be an isotropic multivariate Gaussian random vector with zero mean.
+For all $t>0$,
+%Let A ∈ Rn×n be a matrix, and let Σ := A A. Let x = (x1 , . . . , xn ) be
+%an isotropic multivariate Gaussian random vector with mean zero. For all t > 0,
+%Pr
+%Ax
+%2
+%> tr(Σ) + 2
+%tr(Σ 2 )t + 2 Σ t ≤ e−t .
+\begin{equation}
+\prob{|Ax|^2 > \tr{\Sigma} + 2\sqrt{\tr (\Sigma^2)t} + 2|\Sigma|t} \le e^{-t}
+\end{equation}
+In the special case where $A$ is the identity, this simplifies to
+\begin{equation}
+\label{eq:stdnormaltail}
+\prob{|x|^2 > d + 2\sqrt{dt} + 2t} \le e^{-t}
+\end{equation}
+\end{lemma}
+
+\begin{lemma}
+Let $\w_1,...,\w_m$ be a sequence of $m>2$ random $d$-dimensional vectors sampled independently from the isotropic normal distribution.
+Define $H= \left\{\sum_{i=1}^m \alpha_i\w_i : \sum_{i=1}^m\alpha_i = 1 \right\}$ to be the smallest hyperplane containing $\w_1,...,\w_m$,
+and $h=|\proj{H}\zero|$ to be the minimum distance from $H$ to the origin.
+Then,
+\begin{equation}
+\prob{h^2 < d - m + 2 + 2\sqrt{(d - m + 2)t} + 2t}  \ge 1-e^{-t}
+\end{equation}
+%That is,
+%%\begin{equation}
+%$
+%H = \left\{\sum_{i=1}^m \alpha_i\w_i : \sum_{i=1}^m\alpha_i = 1 \right\}
+%$.
+%\end{equation}
+%Let $q=\min_{\w\in H} |w|$ be the shortest distance between $H$ and the origin.
+%Then with high probability, $q < \sqrt{d-m}$.
+%Then with high probability, $\min_{\w\in H}|\w| \le \sqrt{d - m}$.
+\end{lemma}
+\begin{proof}
+Fix $\w_1,...,\w_{m-1}$.
+Let $G$ be the smallest hyperplane containing $\w_1,...,\w_{m-1}$,
+$U$ be the corresponding vector subspace,
+and $U^* = \vecspan\{\proj{G}\zero\}$.
+Define the point $\x = \proj{U}\w_m - \proj{G}\proj{U}\w_m+ \proj{G}\zero$.
+The vector $\proj{U}\w_m - \proj{G}\proj{U}\w_m$ is in $U^*$,
+so $\x$ is also in $U^*$.
+Since $U^*$ is a line whose direction is independent of $\x$,
+$\x$ is distributed according to a one dimensional standard normal distribution.
+Also by construction, we have that $\x+\proj{\comp U}\w_m \in H$.
+This implies that $h < |\x + \proj{\comp U}\w_m|$.
+This vector has dimension $d - m + 2$ and an isotropic normal distribution.
+Applying Lemma \ref{lemma:hsu} gives the result.
+
+%If the dot product $\trans{\uu^*}\proj{U}\w_m \le 0$,
+%then $|\proj{H}0| \le |\proj{U}\w_m - \proj{H}\proj{U}\w_m|$.
+%\begin{align*}
+%|\proj{U}{\w_m}-\proj{H}\proj{U}\w_m|
+%&\le |\proj{U}\w_m - \w_m| &\text{because $\w_m\in H$}\\
+%&= |\proj{U}\w_m - (\proj{U}\w_m+\proj{V}\w_m)| \\
+%&= |\proj{V}\w_m| \\
+%\end{align*}
+
+%The idea of the proof is to show that $h$ is bounded in probability by the length of a gaussian random variable with dimension $d-m+1$.
+%Let $U$ be the space spanned by $\w_1,...,\w_{m-1}$,
+%and $V$ be the corresponding complement space.
+%We can uniquely decompose $\w_m$ into $\w_U + \w_V$, where $\w_U \in U$ and $\w_V \in V$.
+%The dimension of $V$ is $d-m+1$,
+%and we will show that $h \le |\w_V|$ in probability.
+%Let $\{\uu_i\}$ be an orthogonal basis for $U$.
+%For each $\uu_i$, define the corresponding line $G_i = \{ \alpha \w_m + (1-\alpha)\uu_i \}$ and distance $g_i = \min_{\w\in G_i} |\w|$.
+%We have by construction that $G_i \subseteq H$, and so $h \le g_i$.
+%%If the dot product $\trans\w_U\uu_i < 0$, then $\w_V>g_i$.
+%If the dot product $\trans\w_U\uu_i < 0$, then %$|\w_m -\uu_i| > |\w_V - \uu_i|$.
+%\begin{equation}
+%|\w_m -\uu_i|
+%= |\w_U + \w_V - \uu_i|
+%\ge |\uu_i\uu_i^+\w_U + \w_V - \uu_i|
+%%\ge |\w_{\uu_i} + \w_V - \uu_i|
+%\ge |\w_V - \uu_i|
+%\end{equation}
+%This implies there exists an $\alpha \in [0,1]$ such that $\alpha\w_V \in G_i$,
+%which in turn implies that $|\w_V| \ge g_i \ge h$.
+%The distribution of the dot product $\trans\w_U\uu_i$ is symmetric about the origin,
+%and so it is negative with probability $1/2$.
+%Because each $\uu_i$ is orthogonal, the corresponding distributions are independent.
+%Therefore at least one of the dot products will be negative with probability $1-(1/2)^m$.
+%Combining this fact with Equation \ref{eq:stdnormaltail} gives the result.
+\end{proof}
+
+\begin{lemma}[\cite{dasgupta2003elementary}]
+\label{lemma:dasgupta}
+Let $X_1,...,X_d$ be $d$ independent Gaussian \normal{0}{1} random variables,
+and let $Y=\frac{1}{|X|}(X_1,...,X_d)$.
+Let the vector $Z\in\mathbb{R}^k$ be the projection of $Y$ onto its first $k$ coordinates,
+and let $L=|Z|^2$.
+Clearly, $\E{L}=k/d$.
+If $k<d$, then
+\begin{enumerate}
+\item If $\beta < 1$, then
+\begin{equation}
+\prob{L \le \frac{\beta k}{d}}
+\le
+\beta^{k/2}\left(1+\frac{(1-\beta)k}{d-k}\right)^{(d-k)/2}
+\le
+\exp \left( \frac{k}{2} (1-\beta+\ln \beta) \right)
+\end{equation}
+\item If $\beta > 1$, then
+\begin{equation}
+\prob{L \ge \frac{\beta k}{d}}
+\le
+\beta^{k/2}\left(1+\frac{(1-\beta)k}{d-k}\right)^{(d-k)/2}
+\le
+\exp \left( \frac{k}{2} (1-\beta+\ln \beta) \right)
+\end{equation}
+\end{enumerate}
+\end{lemma}
+
+
+\begin{lemma}
+Let $\w^*$ be an arbitrary $d$ dimensional vector,
+and $\w_1,...,\w_m$ be a sequence of $m>2$ random $d$-dimensional vectors sampled independently from the isotropic normal distribution.
+Define $H= \left\{\sum_{i=1}^m \alpha_i\w_i : \sum_{i=1}^m\alpha_i = 1 \right\}$ to be the smallest hyperplane containing $\w_1,...,\w_m$.
+Then for all $\beta>1$ and $t>0$,
+%\begin{equation}
+%\prob{h^2 < d - m + 2 + 2\sqrt{(d - m + 2)t} + 2t}  \ge 1-e^{-t}
+%\end{equation}
+%Let $\w_i \sim \normal{0}{I}$ be a sequence of $m$ independent $d$ dimensional random vectors,
+%and let $\hat\w$ be an arbitrary point.
+%Define $H= \left\{\sum_{i=1}^m \alpha_i\w_i : \sum_{i=1}^m\alpha_i = 1 \right\}$ to be the smallest hyperplane containing all of the $\w_i$s.
+%Then,
+\begin{multline}
+\prob{
+    |\w^*-\proj{H}\w^*|^2 \le
+    |\w^*|\left(1-\left(\frac{\beta m}{d}\right)\right)
+    +
+    d - m + 2 + 2\sqrt{(d - m + 2)t} + 2t
+}
+\\
+\ge
+(1-e^{-t})
+\erf\left(\frac{\beta m}{d}\right)
+\left(1 - \exp\left(\frac{m}{2}(1-\beta+\ln\beta)\right)\right)^2
+\end{multline}
+\end{lemma}
+\begin{proof}
+Fix $\w_1,...,\w_{m-1}$.
+Let $G$ be the smallest hyperplane containing $\w_1,...,\w_{m-1}$,
+and $U$ be the corresponding vector subspace.
+We have that %by the triangle inequality
+\begin{align}
+|\w^* - \proj{H}\w^*|
+& \le |\w^* - \proj{H}\proj{U}\w^*| & \text{by definition of $\proj{H}$}\\
+& \le |\w^* - \proj{U}\w^*| + |\proj{U}\w^* - \proj{H}\proj{U}\w^*| &\text{by triangle ineq.}
+\end{align}
+We will bound each of these terms separately.
+
+We begin with the first term by noting that the vectors $(\w^* - \proj{U}\w^*)$ and $\proj{U}\w^*$ are orthogonal.
+This lets us use the Pythagorean theorem to conclude that
+\begin{align}
+\label{eq:pythagorean}
+|\w^*-\proj{U}\w^*|
+= \sqrt{|\w^*|^2 - |\proj{U}\w^*|^2}
+\end{align}
+%We will now apply Lemma \ref{lemma:dasgupta} to $\proj{U}\w^*$.
+The vector $\proj{U}\w^*$ is a fixed vector projected onto a random subspace,
+which has the same distribution as a random vector projected onto a fixed subspace.
+Therefore, we can apply Lemma \ref{lemma:dasgupta} to get
+\begin{equation}
+\label{eq:puwstar}
+\prob{
+    |\proj{U}\w^*|
+    \le
+    |\w^*|\left(\frac{\beta m}{d}\right)
+}
+\ge
+1 - \exp\left(\frac{m}{2}(1-\beta+\ln\beta)\right)
+\end{equation}
+Combining Equations \ref{eq:pythagorean} and \ref{eq:puwstar} gives
+\begin{equation}
+\prob{
+    |\w^*-\proj{U}\w^*|
+    \le
+    |\w^*|\left(1-\left(\frac{\beta m}{d}\right)\right)
+}
+\ge
+1 - \exp\left(\frac{m}{2}(1-\beta+\ln\beta)\right)
+\end{equation}
+
+Now for the second term.
+Define the line $U^* = \{\alpha\proj{U}\w^* + (1-\alpha)\proj{G}\proj{U}\w^*\}$,
+and the point $\x = \proj{U}\w_m - \proj{G}\proj{U}\w_m+ \proj{G}\w^*$.
+By construction, we have that $\x\in U^*$ and $\x+\proj{\comp U}\w_m\in H$.
+\begin{align}
+|\proj{U}\w^* - \proj{H}\proj{U}\w^*|
+&\le
+|\proj{U}\w^* - \proj{H}\x|
+&\text{by definition of $\proj{H}$}
+\\
+|\proj{U}\w^* - \proj{H}\proj{U}\w^*|^2
+&=
+|\proj{U}\w^*-\x|^2 + |\x-\proj{H}\x|^2
+&\text{by Pythagorean theorem}
+%&\le
+%|\proj{U}\w^*-\x| + |\x-\proj{H}\x|
+%&\text{by triangle ineq.}
+\\
+&\le
+%|\proj{U}\w^*-\x| + |\x-(\x+\proj{\comp U}\w_m)|
+|\proj{U}\w^*-\x|^2 + |\x-(\x+\proj{\comp U}\w_m)|^2
+&\text{by definition of $\proj{H}$}
+\\
+&=
+%|\proj{U}\w^*-\x| + |\proj{\comp U}\w_m|
+|\proj{U}\w^*-\x|^2 + |\proj{\comp U}\w_m|^2
+\label{eq:bound}
+\end{align}
+%Therefore,
+%then
+%Therefore, the Pythagorean theorem gives
+%\begin{equation}
+%|\proj{U}\w^* - \proj{H}\proj{U}\w^*|
+%=
+%\sqrt{|x-\proj{U}\w^*|^2 + |\proj{\comp U}\w_m|^2}
+%\end{equation}
+%If both vectors in Equation \ref{eq:bound} above were normally distributed,
+%we could finish by applying Lemma \ref{lemma:hsu}.
+The right vector above is normally distributed,
+but the left vector is not.
+Our strategy will be to bound the left vector in probability by a normally distributed vector,
+then apply Lemma \ref{lemma:hsu} to the result.
+%The right vector is normally distributed and can be bounded using Lemma \ref{lemma:hsu}.
+%For the left vector, our strategy is to replace it with a vector that is normally distributed with high probability.
+In particular,
+$|\proj{U^*}\zero -\x|$ has a standard normal distribution,
+and $|\proj{U^*}\zero -\x| \ge |\x - \proj{U}\w^*|$
+whenever $|\proj{U^*}\zero -\x| \ge |\proj{U*}\zero - \proj{U}\w^*|$.
+By the definition of a normal distribution, we have
+\begin{align}
+\label{eq:erf}
+\prob{|\proj{U^*}\zero - \x| \ge \frac{\beta m}{d}}
+\ge
+\erf\left(\frac{\beta m}{d}\right)
+\end{align}
+Furthermore, we have that $|\proj{U^*}\zero - \proj{U}\w^*| \le |\proj{U}\w^*|$,
+which is upper bounded in probability by Equation \ref{eq:puwstar}.
+Combining Equations \ref{eq:puwstar}, \ref{eq:bound}, and \ref{eq:erf} gives:
+\begin{multline}
+\prob{
+    |\proj{U}\w^* - \proj{H}\proj{U}\w^*|^2
+    \le
+    |\proj{U}\w^*-\x|^2 + |\proj{\comp U}\w_m|^2
+}
+\\
+\ge
+\erf\left(\frac{\beta m}{d}\right)
+\left(1 - \exp\left(\frac{m}{2}(1-\beta+\ln\beta)\right)\right)
+\label{eq:almostdone}
+\end{multline}
+Now combining Equation \ref{eq:almostdone} above with Lemma \ref{lemma:hsu} gives our final bound on the right hand term:
+\begin{multline}
+\prob{
+    |\proj{U}\w^* - \proj{H}\proj{U}\w^*|^2
+    \le
+    d - m + 2 + 2\sqrt{(d - m + 2)t} + 2t
+}
+\\
+\ge
+(1-e^{-t})
+\erf\left(\frac{\beta m}{d}\right)
+\left(1 - \exp\left(\frac{m}{2}(1-\beta+\ln\beta)\right)\right)
+\end{multline}
+%\begin{align*}
+%\prob{|\proj{U^*}\zero - \proj{U}\w^*| \ge k|} \ge \\
+%\end{align*}
+
+%and $U^* = \vecspan\{\proj{G}\zero\}$.
+%Define the point $\x = \proj{U}\w_m - \proj{G}\proj{U}\w_m+ \proj{G}\zero$.
+%The vector $\proj{U}\w_m - \proj{G}\proj{U}\w_m$ is in $U^*$,
+%so $\x$ is also in $U^*$.
+%Since $U^*$ is a line whose direction is independent of $\x$,
+%$\x$ is distributed according to a one dimensional standard normal distribution.
+%Also by construction, we have that $\x+\proj{\comp U}\w_m \in H$.
+%This implies that $h < |\x + \proj{\comp U}\w_m|$.
+%This vector has dimension $d - m + 2$ and an isotropic normal distribution.
+%Applying Lemma \ref{lemma:hsu} gives the result.
+
+%Let $U$ be the space spanned by $\w_1,...,\w_{m-1}$,
+%and $\uu_1,...,\uu_{m-1}$ be an orthogonal basis for $U$.
+%For each $\uu_i$, define the line $G_i = \{ \alpha \w_m + (1-\alpha)\uu_i \}$.
+%%Let $V$ be the complement space,
+%%We can uniquely decompose $\w_m$ into $\w_U + \w_V$, where $\w_U \in U$ and $\w_V \in V$.
+%We have that for each $i$,
+%\begin{align}
+%|\hat\w - \proj{H}\hat\w|
+%&\le |\hat\w - \proj{G_i}\hat\w| &\text{because $G_i \subseteq H$} \\
+%&\le |\hat\w - \proj{G_i}\proj{U}\hat\w| &\text{by the definition of $\proj{G_i}$}\\
+%&\le |\hat\w - \proj{U}\hat\w| + |\proj{U}\hat\w-\proj{G_i}\proj{U}\hat\w| &\text{by triangle inequality}
+%\end{align}
+%We now bound the two terms separately.
+%
+%We begin with the first term by noting that the vectors $(\hat\w - \proj{U}\hat\w)$ and $\proj{U}\hat\w$ are orthogonal.
+%This lets us use the Pythagorean theorem to conclude that
+%\begin{align}
+%\label{eq:pythagorean}
+%|\hat\w-\proj{U}\hat\w|
+%= \sqrt{|\hat\w|^2 - |\proj{U}\hat\w|^2}
+%\end{align}
+%%We will now apply Lemma \ref{lemma:dasgupta} to $\proj{U}\hat\w$.
+%The vector $\proj{U}\hat\w$ is a fixed vector projected onto a random subspace,
+%which has the same distribution as a random vector projected onto a fixed subspace.
+%Therefore, we can apply Lemma \ref{lemma:dasgupta} to bound $|\proj{U}\hat\w|$.
+%Substituting into Equation \ref{eq:pythagorean} gives
+%\begin{align}
+%|\hat\w-\proj{U}\hat\w|
+%%= \sqrt{|\hat\w|^2 - |\proj{U}\hat\w|^2}
+%\le \sqrt{|\hat\w|^2 - \left(\frac{\beta m}{d}|\hat\w|\right)^2}
+%= |\hat\w|\left(1-\left(\frac{\beta m}{d}\right)\right)
+%\end{align}
+%for $\beta\ge1$ with probability at least $1-\exp\left(\frac{k}{2}(1-\beta+\ln\beta)\right)$.
+%Applying the Pythagorean theorem and Lemma \ref{lemma:dasgupta} to the first term gives
+%\begin{align}
+%|\hat\w-\proj{U}\hat\w|
+%= \sqrt{|\hat\w|^2 - |\proj{U}\hat\w|^2}
+%\le \sqrt{|\hat\w|^2 - \left(\frac{\beta m}{d}|\hat\w|\right)^2}
+%= |\hat\w|\left(1-\left(\frac{\beta m}{d}\right)\right)
+%\end{align}
+%with probability at least $1-\exp(\frac{k}{2}(1-\beta+\ln\beta))$.
+
+%Now for the second term.
+%Denote by $V$ the orthogonal complement of $U$.
+%The vector $\w_m$ can be uniquely decomposed into $\w_U + \w_V$,
+%where $\w_U\in U$ and $\w_V \in V$.
+%%For the second term, observe that if $|\w_{\uu_i} - \uu_i| > |\proj{U}\hat\w-\uu_i|$
+%\begin{align}
+%|\proj{U}\hat\w-\proj{G_i}\proj{U}\hat\w|
+%&\le
+%|\proj{U_i}\hat\w-\proj{G_i}\proj{U}\hat\w|
+%&\text{by definition of $\proj{U}$}
+%\\
+%&\le
+%|\w_{U_i} - \proj{G_i}\w_{U_i}|
+%&\text{by similarity of triangles}
+%\end{align}
+\end{proof}
+
+\newpage
+\section{Parallelization}
+In everything that follows,
+we assume the likelihood function $f$ satisfies the CLT conditions and already incorporates the regularization penalty.
+
+Let there be $m$ machines we are parallelizing over.
+All previous work assumes that the data on each machine follows the same distribution.
+In this analysis, we will relax that assumption.
+For each machine $i$, let $D_i$ be the distribution of data assigned to that machine.
+
+\begin{align*}
+X_i &\sim D_i^{n_i} ; X=(X_1,X_2,...,X_m)\\
+X'_i &\sim D_i^{n_i} ; X'=(X'_1,X'_2,...,X'_m)
+\end{align*}
+
+\subsection{Baseline approach}
+Define $\w$ to be the parameters from training on the entire dataset.
+That is,
+\begin{align}
+\w &= \argmax_\w \sum_{x\in X  } f(x;\w)
+\end{align}
+By the CLT, we get the convergence rate
+\begin{equation}
+\w \law \w^* + \frac{1}{\sqrt{nm}}\normal{0}{I^{-1}(\w^*)}
+\end{equation}
+\subsection{Averaging}
+The averaging parallel algorithm has relatively poor asymptotic convergence,
+and when the $D_i$ distributions are different can converge to an arbitrarily bad value.
+
+For each machine $i$, train $\w_i$ on the machine's local dataset only.
+That is,
+\begin{align}
+\w_i &= \argmax_\w \sum_{x\in X_i} f(x;\w)
+\end{align}
+According to the CLT, we get the convergence rate
+\begin{equation}
+\label{eq:ave-clt}
+\w_i \law \w_i^* + \frac{1}{\sqrt{n}}\normal{0}{I^{-1}(\w_i^*)}
+\end{equation}
+Merge the results according to the formula
+\begin{equation}
+\label{eq:wbar}
+\bar\w
+=
+\frac{1}{m}\sum_{i=1}^m \w_i
+\end{equation}
+Combining equations \ref{eq:ave-clt} and \ref{eq:wbar} yields
+\begin{equation}
+\bar\w
+\law
+%\frac{1}{m}\sum_{i=1}^m\w_i^*
+\bar\w^*
++
+\frac{1}{\sqrt{n}}\normal{0}{\frac{1}{m}\sum_{i=1}^mI^{-1}(\w_i^*)}
+;
+\bar\w^*
+=
+\frac{1}{m}\sum_{i=1}^m\w_i^*
+\end{equation}
+This method is not consistent because $\bar\w^*$ need not equal $\w^*$.
+
+\subsection{Nested optimizations}
+
+Define the projection matrix
+\begin{equation}
+W=(\w_1,\w_2,...,\w_m)
+\end{equation}
+then this method merges by solving the optimization problem over data points projected onto $W$.
+That is,
+\begin{equation}
+\tilde\w = \argmax_\w \sum_{x\in X'} f(W x; \w)
+\end{equation}
+The vector $\tilde\w$ only has dimension $m$.
+The final solution is given by projecting back into the original space: $W^T\tilde\w$.
+
+Note that the summation is over the data points in $X'$, not in $X$.
+This is important to ensure that the projected data points $Wx$ are independent,
+which is required for the CLT.
+So by the CLT, we get the convergence rate
+\begin{equation}
+\tilde\w
+\law
+\tilde\w^*
++
+\frac{1}{\sqrt{nm}}\normal{0}{I^{-1}(\tilde\w^*)}
+\end{equation}
+
+We are interested in
+\begin{equation}
+W^T\tilde\w^* - \w^* =
+\end{equation}
+
+\bibliographystyle{plain}
+\bibliography{paper}
+
+\end{document}
+

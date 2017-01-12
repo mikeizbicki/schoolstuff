@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+
+\bibitem{dasgupta2003elementary}
+Sanjoy Dasgupta and Anupam Gupta.
+\newblock An elementary proof of a theorem of johnson and lindenstrauss.
+\newblock {\em Random Structures \& Algorithms}, 22(1):60--65, 2003.
+
+\bibitem{hsu2012tail}
+Daniel Hsu, Sham~M Kakade, Tong Zhang, et~al.
+\newblock A tail inequality for quadratic forms of subgaussian random vectors.
+\newblock {\em Electron. Commun. Probab}, 17(52):1--6, 2012.
+
+\end{thebibliography}

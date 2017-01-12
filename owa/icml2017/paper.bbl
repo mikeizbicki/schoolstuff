@@ -1,0 +1,144 @@
+\begin{thebibliography}{20}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Braverman et~al.(2015)Braverman, Garg, Ma, Nguyen, and
+  Woodruff]{braverman2015communication}
+Mark Braverman, Ankit Garg, Tengyu Ma, Huy~L Nguyen, and David~P Woodruff.
+\newblock Communication lower bounds for statistical estimation problems via a
+  distributed data processing inequality.
+\newblock \emph{arXiv preprint arXiv:1506.07216}, 2015.
+
+\bibitem[Dasgupta and Gupta(2003)]{dasgupta2003elementary}
+Sanjoy Dasgupta and Anupam Gupta.
+\newblock An elementary proof of a theorem of {J}ohnson and {L}indenstrauss.
+\newblock \emph{Random Structures \& Algorithms}, 22\penalty0 (1):\penalty0
+  60--65, 2003.
+
+\bibitem[Garg et~al.(2014)Garg, Ma, and Nguyen]{garg2014communication}
+Ankit Garg, Tengyu Ma, and Huy Nguyen.
+\newblock On communication cost of distributed statistical estimation and
+  dimensionality.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  2726--2734, 2014.
+
+\bibitem[Han and Liu(2016)]{han2016bootstrap}
+Jun Han and Qiang Liu.
+\newblock Bootstrap model aggregation for distributed statistical learning.
+\newblock \emph{arXiv preprint arXiv:1607.01036}, 2016.
+
+\bibitem[Hsu et~al.(2012)Hsu, Kakade, Zhang, et~al.]{hsu2012tail}
+Daniel Hsu, Sham~M Kakade, Tong Zhang, et~al.
+\newblock A tail inequality for quadratic forms of subgaussian random vectors.
+\newblock \emph{Electron. Commun. Probab}, 17\penalty0 (52):\penalty0 1--6,
+  2012.
+
+\bibitem[Lehmann(1999)]{lehmann1999elements}
+Erich~Leo Lehmann.
+\newblock \emph{Elements of large-sample theory}.
+\newblock Springer Science \& Business Media, 1999.
+
+\bibitem[Liu and Ihler(2014)]{liu2014distributed}
+Qiang Liu and Alexander~T Ihler.
+\newblock Distributed estimation, information loss and exponential families.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  1098--1106, 2014.
+
+\bibitem[McDonald et~al.(2009)McDonald, Mohri, Silberman, Walker, and
+  Mann]{mcdonald2009efficient}
+Ryan McDonald, Mehryar Mohri, Nathan Silberman, Dan Walker, and Gideon~S Mann.
+\newblock Efficient large-scale distributed training of conditional maximum
+  entropy models.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  1231--1239, 2009.
+
+\bibitem[Merugu and Ghosh(2003)]{merugu2003privacy}
+Srujana Merugu and Joydeep Ghosh.
+\newblock Privacy-preserving distributed clustering using generative models.
+\newblock In \emph{Data Mining, 2003. ICDM 2003. Third IEEE International
+  Conference on}, pages 211--218. IEEE, 2003.
+
+\bibitem[Negahban et~al.(2009)Negahban, Yu, Wainwright, and
+  Ravikumar]{negahban2009unified}
+Sahand Negahban, Bin Yu, Martin~J Wainwright, and Pradeep~K Ravikumar.
+\newblock A unified framework for high-dimensional analysis of m-estimators
+  with decomposable regularizers.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  1348--1356, 2009.
+
+\bibitem[Niu et~al.(2012)Niu, Wang, Sun, Yue, Dalessandro, Perlich, and
+  Hamner]{kddcup2012}
+Yanzhi Niu, Yi~Wang, Gordon Sun, Aden Yue, Brian Dalessandro, Claudia Perlich,
+  and Ben Hamner.
+\newblock The tencent dataset and kdd-cup'12.
+\newblock 2012.
+
+\bibitem[Pedregosa et~al.(2011)Pedregosa, Varoquaux, Gramfort, Michel, Thirion,
+  Grisel, Blondel, Prettenhofer, Weiss, Dubourg, Vanderplas, Passos,
+  Cournapeau, Brucher, Perrot, and Duchesnay]{scikit-learn}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
+  M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, J.~Vanderplas, A.~Passos,
+  D.~Cournapeau, M.~Brucher, M.~Perrot, and E.~Duchesnay.
+\newblock Scikit-learn: Machine learning in {P}ython.
+\newblock \emph{Journal of Machine Learning Research}, 12:\penalty0 2825--2830,
+  2011.
+
+\bibitem[Shamir(2014)]{shamir2014fundamental}
+Ohad Shamir.
+\newblock Fundamental limits of online and distributed algorithms for
+  statistical learning and estimation.
+\newblock In \emph{Advances in Neural Information Processing Systems 27}, pages
+  163--171, 2014.
+
+\bibitem[Sivakumar et~al.(2015)Sivakumar, Banerjee, and
+  Ravikumar]{sivakumar2015beyond}
+Vidyashankar Sivakumar, Arindam Banerjee, and Pradeep~K Ravikumar.
+\newblock Beyond sub-gaussian measurements: High-dimensional structured
+  estimation with sub-exponential designs.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  2206--2214, 2015.
+
+\bibitem[Spokoiny(2012)]{spokoiny2012parametricestimation}
+Vladimir Spokoiny.
+\newblock Parametric estimation. finite sample theory.
+\newblock \emph{The Annals of Statistics}, 40\penalty0 (6):\penalty0
+  2877--2909, 2012.
+
+\bibitem[Vershynin(2012)]{vershynin2010introduction}
+Roman Vershynin.
+\newblock Introduction to the non-asymptotic analysis of random matrices.
+\newblock In Y.~Eldar and G.~Kutyniok, editors, \emph{Compressed Sensing,
+  Theory and Applications}, chapter~5. 2012.
+
+\bibitem[Zhang et~al.(2012)Zhang, Wainwright, and
+  Duchi]{zhang2012communication}
+Yuchen Zhang, Martin~J Wainwright, and John~C Duchi.
+\newblock Communication-efficient algorithms for statistical optimization.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  1502--1510, 2012.
+
+\bibitem[Zhang et~al.(2013{\natexlab{a}})Zhang, Duchi, Jordan, and
+  Wainwright]{zhang2013information}
+Yuchen Zhang, John Duchi, Michael~I Jordan, and Martin~J Wainwright.
+\newblock Information-theoretic lower bounds for distributed statistical
+  estimation with communication constraints.
+\newblock In \emph{Advances in Neural Information Processing Systems}, pages
+  2328--2336, 2013{\natexlab{a}}.
+
+\bibitem[Zhang et~al.(2013{\natexlab{b}})Zhang, Duchi, and
+  Wainwright]{zhang2013divide}
+Yuchen Zhang, John~C Duchi, and Martin~J Wainwright.
+\newblock Divide and conquer kernel ridge regression.
+\newblock In \emph{COLT}, 2013{\natexlab{b}}.
+
+\bibitem[Zinkevich et~al.(2010)Zinkevich, Weimer, Li, and
+  Smola]{zinkevich2010parallelized}
+Martin Zinkevich, Markus Weimer, Lihong Li, and Alex~J Smola.
+\newblock Parallelized stochastic gradient descent.
+\newblock In \emph{Advances in neural information processing systems}, pages
+  2595--2603, 2010.
+
+\end{thebibliography}
