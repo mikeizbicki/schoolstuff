@@ -1,9 +1,15 @@
-\begin{thebibliography}{20}
+\begin{thebibliography}{23}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Battey et~al.(2015)Battey, Fan, Liu, Lu, and
+  Zhu]{battey2015distributed}
+Heather Battey, Jianqing Fan, Han Liu, Junwei Lu, and Ziwei Zhu.
+\newblock Distributed estimation and inference with statistical guarantees.
+\newblock \emph{arXiv preprint arXiv:1509.05457}, 2015.
 
 \bibitem[Braverman et~al.(2015)Braverman, Garg, Ma, Nguyen, and
   Woodruff]{braverman2015communication}
@@ -35,6 +41,11 @@ Daniel Hsu, Sham~M Kakade, Tong Zhang, et~al.
 \newblock A tail inequality for quadratic forms of subgaussian random vectors.
 \newblock \emph{Electron. Commun. Probab}, 17\penalty0 (52):\penalty0 1--6,
   2012.
+
+\bibitem[Lee et~al.(2015)Lee, Sun, Liu, and Taylor]{lee2015communication}
+Jason~D Lee, Yuekai Sun, Qiang Liu, and Jonathan~E Taylor.
+\newblock Communication-efficient sparse regression: a one-shot approach.
+\newblock \emph{arXiv preprint arXiv:1503.04337}, 2015.
 
 \bibitem[Lehmann(1999)]{lehmann1999elements}
 Erich~Leo Lehmann.
@@ -85,6 +96,12 @@ F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
 \newblock Scikit-learn: Machine learning in {P}ython.
 \newblock \emph{Journal of Machine Learning Research}, 12:\penalty0 2825--2830,
   2011.
+
+\bibitem[Rosenblatt and Nadler(2016)]{rosenblatt2016optimality}
+Jonathan~D Rosenblatt and Boaz Nadler.
+\newblock On the optimality of averaging in distributed statistical learning.
+\newblock \emph{Information and Inference}, 5\penalty0 (4):\penalty0 379--404,
+  2016.
 
 \bibitem[Shamir(2014)]{shamir2014fundamental}
 Ohad Shamir.

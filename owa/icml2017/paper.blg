@@ -3,56 +3,56 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: paper.aux
 The style file: plainnat.bst
 Database file #1: paper.bib
-Repeated entry---line 137 of file paper.bib
+Repeated entry---line 149 of file paper.bib
  : @inproceedings{zhang2012communication
  :                                      ,
 I'm skipping whatever remains of this entry
-You're missing a field name---line 158 of file paper.bib
+You're missing a field name---line 177 of file paper.bib
  :   
  :   %url={https://github.com/JohnLangford/vowpal_wabbit}
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
 Warning--empty journal in kddcup2012
 Warning--empty publisher in vershynin2010introduction
-You've used 20 entries,
+You've used 23 entries,
             2773 wiz_defined-function locations,
-            700 strings with 8589 characters,
-and the built_in function-call counts, 11759 in all, are:
-= -- 1046
-> -- 716
-< -- 19
-+ -- 242
-- -- 221
-* -- 915
-:= -- 1704
-add.period$ -- 62
-call.type$ -- 20
-change.case$ -- 131
-chr.to.int$ -- 19
-cite$ -- 42
-duplicate$ -- 553
-empty$ -- 928
-format.name$ -- 249
-if$ -- 2546
+            714 strings with 9145 characters,
+and the built_in function-call counts, 13191 in all, are:
+= -- 1167
+> -- 824
+< -- 20
++ -- 278
+- -- 254
+* -- 1038
+:= -- 1933
+add.period$ -- 71
+call.type$ -- 23
+change.case$ -- 151
+chr.to.int$ -- 22
+cite$ -- 48
+duplicate$ -- 613
+empty$ -- 1030
+format.name$ -- 287
+if$ -- 2837
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 21
-newline$ -- 108
-num.names$ -- 82
-pop$ -- 303
+missing$ -- 24
+newline$ -- 123
+num.names$ -- 94
+pop$ -- 341
 preamble$ -- 1
-purify$ -- 112
+purify$ -- 129
 quote$ -- 0
-skip$ -- 470
+skip$ -- 519
 stack$ -- 0
-substring$ -- 518
-swap$ -- 139
+substring$ -- 549
+swap$ -- 142
 text.length$ -- 11
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 215
+type$ -- 248
 warning$ -- 2
-while$ -- 99
+while$ -- 110
 width$ -- 0
-write$ -- 262
+write$ -- 299
 (There were 2 error messages)

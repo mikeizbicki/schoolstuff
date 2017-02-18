@@ -1,5 +1,5 @@
 \documentclass[twoside]{article}
-\usepackage{icml2016}
+\usepackage{icml2017}
 
 % If your paper is accepted, change the options for the package
 % aistats2015 as follows:
@@ -89,12 +89,16 @@
 \newcommand{\wtave}{\E\hat\w^{ave}}
 \newcommand{\waver}{\hat\w^{ave,r}}
 \newcommand{\wboot}{\hat\w^{boot}}
-\newcommand{\wmle}{\hat\w^{mle}}
-\newcommand{\wmler}{\hat\w^{mle,r}}
+\newcommand{\wmle}{\hat\w^{erm}}
+\newcommand{\wmler}{\hat\w^{erm,r}}
 \newcommand{\wstar}{{\w^{*}}}
+\newcommand{\what}{{\hat\w}}
 \newcommand{\wq}{\hat\w^{q}}
 \newcommand{\wqstar}{\hat\w^{q^*}}
 \newcommand{\dist}{\mathcal{D}}
+\newcommand{\reg}{r}
+\newcommand{\loss}{\ell}
+\newcommand{\Loss}{\mathcal{L}}
 
 \newcommand{\tbias}{t_{\text{\textit{bias}}}}
 \newcommand{\tvar}{t_{\text{\textit{var}}}}
@@ -118,8 +122,8 @@
 }
 \newcommand{\kl}{\text{KL}\infdivx}
 
-%\newcommand{\plots}[1]{}
-\newcommand{\plots}[1]{#1}
+\newcommand{\plots}[1]{}
+%\newcommand{\plots}[1]{#1}
 \newcommand{\ignore}[1]{}
 \newcommand{\fixme}[1]{\textbf{FIXME:} {#1}}
 
@@ -217,6 +221,18 @@
   year={2012}
 }
 
+@article{boyd2011distributed,
+  title={Distributed optimization and statistical learning via the alternating direction method of multipliers},
+  author={Boyd, Stephen and Parikh, Neal and Chu, Eric and Peleato, Borja and Eckstein, Jonathan},
+  journal={Foundations and Trends{\textregistered} in Machine Learning},
+  volume={3},
+  number={1},
+  pages={1--122},
+  year={2011},
+  publisher={Now Publishers Inc.}
+}
+
+
 @article{spokoiny2012parametricestimation,
   title={Parametric estimation. Finite sample theory},
   author={Spokoiny, Vladimir},
@@ -274,6 +290,13 @@
   number={52},
   pages={1--6},
   year={2012}
+}
+
+@inproceedings{li2014scaling,
+  title={Scaling Distributed Machine Learning with the Parameter Server.},
+  author={Li, Mu and Andersen, David G and Park, Jun Woo},
+  journal={OSDI},
+  year=2014
 }
 
 @article{vw,
@@ -345,11 +368,36 @@
   year={2015}
 }
 
+@article{lee2015communication,
+  title={Communication-efficient sparse regression: a one-shot approach},
+  author={Lee, Jason D and Sun, Yuekai and Liu, Qiang and Taylor, Jonathan E},
+  journal={arXiv preprint arXiv:1503.04337},
+  year={2015}
+}
+
+@article{battey2015distributed,
+  title={Distributed estimation and inference with statistical guarantees},
+  author={Battey, Heather and Fan, Jianqing and Liu, Han and Lu, Junwei and Zhu, Ziwei},
+  journal={arXiv preprint arXiv:1509.05457},
+  year={2015}
+}
+
 @article{han2016bootstrap,
   title={Bootstrap Model Aggregation for Distributed Statistical Learning},
   author={Han, Jun and Liu, Qiang},
   journal={arXiv preprint arXiv:1607.01036},
   year={2016}
+}
+
+@article{rosenblatt2016optimality,
+  title={On the optimality of averaging in distributed statistical learning},
+  author={Rosenblatt, Jonathan D and Nadler, Boaz},
+  journal={Information and Inference},
+  volume={5},
+  number={4},
+  pages={379--404},
+  year={2016},
+  publisher={Oxford University Press}
 }
 \end{filecontents}
 \immediate\write18{bibtex paper}
@@ -365,52 +413,47 @@
            %International Conference on Machine Learning (ICML 2016)}
 \icmltitle{Communication-Efficient Distributed Maximum Likelihood Estimation with the Optimal Weighted Average}
 
-% It is OKAY to include author information, even for blind
-% submissions: the style file will automatically remove it for you
-% unless you've provided the [accepted] option to the icml2016
-% package.
-\icmlauthor{Your Name}{email@yourdomain.edu}
-\icmladdress{Your Fantastic Institute,
-            314159 Pi St., Palo Alto, CA 94306 USA}
-\icmlauthor{Your CoAuthor's Name}{email@coauthordomain.edu}
-\icmladdress{Their Fantastic Institute,
-            27182 Exp St., Toronto, ON M6H 2T1 CANADA}
+\begin{icmlauthorlist}
+\icmlauthor{Aeiau Zzzz}{equal,to}
+\icmlauthor{Bauiu C.~Yyyy}{equal,to,goo}
+\icmlauthor{Cieua Vvvvv}{goo}
+\icmlauthor{Iaesut Saoeu}{ed}
+\icmlauthor{Fiuea Rrrr}{to}
+\icmlauthor{Tateu H.~Yasehe}{ed,to,goo} 
+\icmlauthor{Aaoeu Iasoh}{goo}
+\icmlauthor{Buiui Eueu}{ed}
+\icmlauthor{Aeuia Zzzz}{ed}
+\icmlauthor{Bieea C.~Yyyy}{to,goo}
+\icmlauthor{Teoau Xxxx}{ed}
+\icmlauthor{Eee Pppp}{ed}
+\end{icmlauthorlist}
+
+\icmlaffiliation{to}{University of Torontoland, Torontoland, Canada}
+\icmlaffiliation{goo}{Googol ShallowMind, New London, Michigan, USA}
+\icmlaffiliation{ed}{University of Edenborrow, Edenborrow, United Kingdom}
+
+\icmlcorrespondingauthor{Cieua Vvvvv}{c.vvvvv@googol.com}
+\icmlcorrespondingauthor{Eee Pppp}{ep@eden.co.uk}
+
+% You may provide any keywords that you 
+% find helpful for describing your paper; these are used to populate 
+% the "keywords" metadata in the PDF but will not be shown in the document
+\icmlkeywords{boring formatting information, machine learning, ICML}
+
+\vskip 0.3in
 ]
-
-% If your paper is accepted and the title of your paper is very long,
-% the style will print as headings an error message. Use the following
-% command to supply a shorter title of your paper so that it can be
-% used as headings.
-%
-%\runningtitle{I use this title instead because the last one was very long}
-
-% If your paper is accepted and the number of authors is large, the
-% style will print as headings an error message. Use the following
-% command to supply a shorter version of the authors names so that
-% they can be used as headings (for example, use only the surnames)
-%
-%\runningauthor{Surname 1, Surname 2, Surname 3, ...., Surname n}
-
-%\twocolumn[
-%
-%%\aistatstitle{Instructions for paper submissions to AISTATS 2015}
-%\aistatstitle{Communication-Efficient Distributed Maximum Likelihood Estimation with the Optimal Weighted Average}
-%
-%\aistatsauthor{ Anonymous Author 1 \And Anonymous Author 2 \And Anonymous Author 3 }
-%
-%\aistatsaddress{ Unknown Institution 1 \And Unknown Institution 2 \And Unknown Institution 3 } ]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-We present a distributed algorithm for maximum likelihood estimation (MLE) with low communication cost.
-In our algorithm, each machine in a cluster first independently solves the MLE problem on a subset of the data;
+We present a distributed algorithm for empirical risk minimization (ERM) with low communication cost.
+In our algorithm, each machine first independently solves the ERM problem on a subset of the data;
 a second round of optimization then finds the optimal weighted average of the parameter vectors.
 We show analytically that this method reduces both the bias and variance of the estimator when compared to the estimator trained by a single machine.
 (The straight average is known to reduce only the variance.)
 Our analysis relies on simple properties of sub-Gaussian random vectors.
 It is therefore simpler and more general than the analysis of similar distributed algorithms.
-Notably, we do not assume (as do all previous analyses) that the likelihood function is concave or that any quantities are bounded.
+Notably, we do not assume (as do all previous analyses) that the loss is convex or that any quantities are bounded.
 A major practical advantage of our method is that it is robust to the amount of regularization,
 which speeds up model selection.
 \end{abstract}
@@ -427,9 +470,6 @@ which speeds up model selection.
 
 Many modern datasets are too large to fit in the memory of a single machine,
 so they must be partitioned onto many machines.
-%These datasets are typically partitioned onto many machines.
-%Statistical learning algorithms are then run in a distributed manner.
-%There are two main strategies for these distributed algorithms.
 To analyze these datasets, we need distributed algorithms.
 Existing distributed algorithms can be classified as either interactive or non-interactive depending on their communication complexity.
 In this paper we propose an algorithm that exhibits the benefits of both types.
@@ -440,6 +480,7 @@ The appeal of interactive algorithms is that they enjoy the same statistical reg
 But, there are two downsides.
 First, these algorithms can be too slow in practice because communication is the main bottleneck in modern distributed architectures.
 Second, these algorithms require special implementations and do not work with off-the-shelf statistics libraries provided by (for example) Python, R, and Matlab.
+%\citet{boyd2011distributed} and \citet{li2014scaling} provide illustrative examples of interactive algorithms.
 
 \emph{Non-interactive} algorithms require only a single round of communication.
 They are significantly faster than interactive algorithms and  easily implemented with standard libraries.
@@ -450,6 +491,9 @@ In this paper, we propose a \emph{semi-interactive} distributed algorithm called
 Our algorithm performs two rounds of communication,
 so it is not subject to the existing regret bounds of non-interactive algorithms.
 The algorithm has two tunable parameters that let the user trade better statistical performance for worse communication complexity.
+These parameters do not require cross-validation to set correctly;
+increasing the amount of communication will always improve the statistical performance.
+Therefore, these parameters are determined by the communication constraints and not the underlying data.
 %The amount of information communicated in the second round is small, however,
 %so our algorithm retains the speed advantages of non-interactive algorithms.
 The OWA algorithm is easily implemented in a MapReduce architecture with standard packages.
@@ -457,7 +501,7 @@ The OWA algorithm is easily implemented in a MapReduce architecture with standar
 %The popular large scale learning system Vowpal Wabbit combines both types of algorithms to achieve good real world performance.
 %A non-interactive algorithm is run first to provide a good warm start to a subsequent interactive algorithm \citep{vw,agarwal2014reliable}.
 
-In the next section, we formally describe our OWA algorithm.
+In the next section, we formally describe the OWA algorithm.
 In Section 3, we compare OWA to existing distributed algorithms.
 We highlight how the analysis of existing algorithms requires more limiting assumptions than our own,
 and show in detail why existing non-interactive regret bounds do not apply to OWA.
@@ -476,9 +520,9 @@ which is one of the reasons it performs well in practice.
 %$\X\subseteq\mathbb{R}^d$ be the covariate space,
 %and $\Y\subseteq\mathbb{R}$ be the response space.
 %Let $Z\subset\X\times\Y$ be a set of $mn$ i.i.d. datapoints.
-%Then the centralized Maximum Likelihood Estimator (MLE) is defined as
+%Then the centralized Maximum Likelihood Estimator (ERM) is defined as
 %\begin{equation}
-%\wmle = \argmax_\w \sum_{(\x,y)\in Z} f(y-\trans\x\w)
+%\wmle = \argmax_\w \sum_{(\x,y)\in Z} \loss(y-\trans\x\w)
 %\end{equation}
 
 This section first formally introduces the problem of communication efficient distributed estimation,
@@ -489,31 +533,27 @@ then describes our proposed OWA distributed estimator.
 Let $\Y\subseteq\mathbb{R}$ be the space of response variables,
 $X\subseteq\mathbb{R}^d$ be the space of covariates,
 and $\Theta\subseteq\mathbb{R}^d$ be the parameter space.
-We assume a linear model.
-The log-likelihood of data point $(\x,y)\in\X\times\Y$ given the model's true parameter $\wstar\in\Theta$ is denoted by $f(y,\trans\x\wstar)$.
-Our analysis in Section \ref{sec:anal} places very mild restrictions on $f$.
-In particular, $f$ need not be concave with respect to $\w$.
-%For our experiments in Section \ref{sec:exp}, however, we restrict ourselves to the likelihood for logistic regression
-%\begin{equation}
-%f(y,\trans\x\w) =
-%\end{equation}
+%A model is specified by a loss function $f:\Y\times\mathbb R\to\mathbb R$.
+We assume a linear model where the loss of data point $(\x,y)\in\X\times\Y$ given the parameter $\wstar\in\Theta$ is denoted by $\loss(y,\trans\x\wstar)$.
+We do not require that the model be correctly specified,
+nor do we require that $\loss$ be convex with respect to $\w$.
 Let $Z\subset\X\times\Y$ be a dataset of $mn$ i.i.d. observations.
-Finally, let $R : \Theta \to \mathbb{R}$ be a regularization function (typically the L1 or L2 norm)
+Finally, let $\reg : \Theta \to \mathbb{R}$ be a regularization function (typically the L1 or L2 norm)
 and $\lambda\in\mathbb{R}$ be the regularization strength.
-Then the regularized maximum likelihood estimator (MLE) is
+Then the regularized empirical risk minimizer (ERM) is
 \begin{equation}
 %\wmle=\argmax_\w \sum_{i=1}^{nm} g(y_i-\trans\x_i\w)
-\wmle=\argmax_\w \sum_{(\x,y)\in Z} f(y,\trans\x\w)
-+ \lambda R(\theta)
+\wmle=\argmax_\w \sum_{(\x,y)\in Z} \loss(y,\trans\x\w)
++ \lambda \reg(\theta)
 .
 \end{equation}
-In the remainder of this paper, it should be understood that all MLEs are regularized.
+In the remainder of this paper, it should be understood that all ERMs are regularized.
 
-Assume that $Z$ has been partitioned onto $m$ machines so that each machine $i$ has dataset $Z_i$ of size $n$, and all the $Z_i$ are disjoint.
-Then each machine calculates the local MLE
+Assume that the dataset $Z$ has been partitioned onto $m$ machines so that each machine $i$ has dataset $Z_i$ of size $n$, and all the $Z_i$ are disjoint.
+Then each machine calculates the local ERM
 \begin{equation}
-\wmle_i = \argmax_\w \sum_{(\x,y) \in Z_i} f(y,\trans\x\w)
-+ \lambda R(\theta)
+\wmle_i = \argmax_\w \sum_{(\x,y) \in Z_i} \loss(y,\trans\x\w)
++ \lambda \reg(\theta)
 .
 \end{equation}
 Solving for $\wmle_i$ requires no communication with other machines.
@@ -528,9 +568,14 @@ A baseline merging procedure is the averaging estimator
 .
 \end{equation}
 This estimator is well studied, and in Section \ref{sec:relwork} we compare this previous work to our own.
-Here we briefly recall that an estimator's error $\ltwo{\wstar-\wave}$ can be decomposed into bias $\ltwo{\wstar - \E\wave}$ and variance $\ltwo{\E\wave-\wave}$ components.
-The $\wave$ estimator is known to have lower variance than the estimator $\wmle_i$ trained on a single machine, but the same bias.
-Our goal is to design an estimator that reduces both variance and bias.
+%Here we briefly recall that we can use the triangle inequality to decomposed an estimator's error as
+%\begin{equation}
+%\ltwo{\wstar-\wave} \le \ltwo{\wstar - \E\wave} + \ltwo{\E\wave-\wave}.
+%\end{equation}
+%We refer to $\ltwo{\w-\E\wave}$ as the bias of the estimator and $\ltwo{\E\w-\w}$ as the deviation.
+%%$\ltwo{\wstar-\wave}$ can be decomposed into bias $\ltwo{\wstar - \E\wave}$ and variance $\ltwo{\E\wave-\wave}$ components.
+%The $\wave$ estimator is known to have lower variance than the estimator $\wmle_i$ trained on a single machine, but the same bias.
+%Our goal is to design an estimator that reduces both variance and bias.
 
 %Next, we need a function $q : \Theta^m \to \Theta$ that combines the parameter estimates from each machine.
 %Define the resulting parameter estimate as
@@ -546,11 +591,11 @@ Our goal is to design an estimator that reduces both variance and bias.
 
 \subsection{Proposed Solution}
 
-We propose a modification to the averaging estimator called the \emph{optimal weighted average} (OWA) that reduces both variance and bias.
+We propose a modification to the averaging estimator called the \emph{optimal weighted average} (OWA). 
 OWA uses a second round of optimization to calculate the optimal linear combination of the $\wmle_i$s.
 %Using these optimal weights, we reduce bias at a rate of $O(\sqrt{1-m/d})$.
 This second optimization occurs over a small fraction of the dataset,
-so its computational and communication overhead is negligible.
+so its computational and communication cost is negligible.
 
 To motivate our estimator,
 we first present an estimator that uses the entire dataset for the second round of optimization.
@@ -564,14 +609,14 @@ Now consider the estimator
 where
 \begin{equation}
 \label{eq:afull}
-\afull = \argmax_\alpha \sum _{(\x,y)\in Z} f\left(y,\trans\x \matW \alpha \right)
+\afull = \argmax_\alpha \sum _{(\x,y)\in Z} \loss\left(y,\trans\x \matW \alpha \right)
 +
-\lambda R(\matW\alpha)
+\lambda \reg(\matW\alpha)
 .
 \end{equation}
-Notice that $\wowafull$ is the maximum likelihood estimator when the parameter space $\Theta$ is restricted to $\W = \vecspan \{\wmle_i\}_{i=1}^m$.
+Notice that $\wowafull$ is the empirical risk minimizer when the parameter space $\Theta$ is restricted to $\W = \vecspan \{\wmle_i\}_{i=1}^m$.
 In other words, the $\afull$ vector contains the optimal weights to apply to each $\wmle_i$ when averaging.
-Figure \ref{fig:contour} shows graphically that no other estimator in $\W$ can have higher regularized empirical likelihood than $\wowafull$.
+Figure \ref{fig:contour} shows graphically that no other estimator in $\W$ can have lower regularized empirical loss than $\wowafull$.
 
 \begin{figure}
 \hspace{-0.1in}
@@ -610,15 +655,13 @@ Figure \ref{fig:contour} shows graphically that no other estimator in $\W$ can h
 \node[dot] at (-0.55,1.9) {};
 \node at (-0.1,2.3) {$\wowa$};
 
-\node at (4,-1.3) {$f(y,\trans\x\w)+\lambda R(\theta)$};
+\node at (4,-1.3) {$\loss(y,\trans\x\w)+\lambda \reg(\theta)$};
 \node at (5.65,1.0) {$\W$};
 \end{tikzpicture}
 \vspace{-0.35in}
 \caption{
     Our method performs a second round of optimization to find the best parameter vector in $\W$.
-    %Since $\wave\in\W$, the estimator $\wowafull$ has higher empirical likelihood than $\wave$.
-    Since $\W$ has low dimension, we can use relatively few data points in the second round of optimization to ensure that with high probability $\wowa$ has higher empirical likelihood than $\wave$.
-    %Since $\W$ has low dimension, we can use relatively few data points in the second round of optimization to ensure that $\ltwo{\wowafull-\wowa}$ is small.
+    Since $\W$ has low dimension, we can use relatively few data points in the second round of optimization to ensure that with high probability $\wowa$ has lower empirical loss than $\wave$.
 }
 \label{fig:contour}
 \end{figure}
@@ -638,49 +681,60 @@ Then the OWA estimator is defined as
 where
 \begin{equation}
 \label{eq:ahat}
-\ahat = \argmax_\alpha \sum _{(\x,y)\in \Zowa} f\left(y,\trans\x \matW \alpha \right)
-+ \lambda R (\matW\alpha)
+\ahat = \argmax_\alpha \sum _{(\x,y)\in \Zowa} \loss\left(y,\trans\x \matW \alpha \right)
++ \lambda \reg(\matW\alpha)
 .
 \end{equation}
 
 Algorithm \ref{fig:alg2} shows the steps for efficiently computing $\wowa$.
 In the first round, each machine calculates $\wmle_i$ independently and broadcasts the result to every other machine.
-Since the parameter vector has $d$ dimensions and there are $m$ machines, a total of $O(md)$ bits are transmitted.
+A total of $O(dm^2)$ bits are transmitted in this round.
+(The parameter vector has $d$ dimensions,
+there are $m$ machines,
+and each machine transmits to each other machine.)
 In the second round, each machine projects its local dataset $\Zowa_i$ onto the space $\W$.
 These projected data points are then transmitted to a predesignated master machine.
-The projected data points each have dimension $m$, so a total of $O(m^2\nowa)$ bits are transmitted.
-The master machine now has all of the information to complete the optimization.
-In total, $O(md + m^2\nowa)$ bits were transmitted.
-When $d<m\nowa$, this is the same order of bits as the averaging estimator.
+A total of $O(m^2\nowa)$ bits are transmitted.
+(The projected data points each have dimension $m$, 
+each of the $m$ machines makes a single communication,
+and there are $\nowa$ total data points per machine.)
+%The master machine now has all of the information to complete the optimization.
+In general, $\nowa$ will be set to $O(m)<O(d)$.
+So the total data transmitted in both rounds is $O(dm^2)$. 
+The averaging estimator transmits $O(dm)$ bits,
+so whenever $d>m^2$, OWA has the same communication complexity as averaging.
+%When $d<m\nowa$, this is the same order of bits as the averaging estimator.
 
-%\begin{algorithm}[t]
-%\caption{Distributed calculation of $\wowa$}
-%\label{alg:distributed}
-%\begin{algorithmic}
-%\State Round 1, each machine $i$ independently:
-%\State ~~~~~loads dataset $Z_i$
-%\State ~~~~~calculates $\wmle_i$
-%\State ~~~~~broadcasts $\wmle_i$ to all other machines
-%\State Round 2, each machine $i$ independently:
-%\State ~~~~~constructs $\matW$
-%\State ~~~~~randomly selects a dataset $\Zowa_i\subset Z_i$
-%\State ~~~~~calculates $\Zproj_i=\{(\trans\x\matW,y) : (\x,y)\in\Zowa\}$
-%\State ~~~~~broadcasts $\Zproj_i$ to a master machine
-%\State The master calculates $\wowa$
-%\end{algorithmic}
-%\label{fig:alg2}
-%\end{algorithm}
+\begin{algorithm}[t]
+\caption{Distributed calculation of $\wowa$}
+\label{alg:distributed}
+\begin{algorithmic}
+\STATE Round 1, each machine $i$ independently:
+\STATE ~~~~~loads dataset $Z_i$
+\STATE ~~~~~calculates $\wmle_i$
+\STATE ~~~~~broadcasts $\wmle_i$ to all other machines
+\STATE Round 2, each machine $i$ independently:
+\STATE ~~~~~constructs $\matW$
+\STATE ~~~~~randomly selects a dataset $\Zowa_i\subset Z_i$
+\STATE ~~~~~calculates $\Zproj_i=\{(\trans\x\matW,y) : (\x,y)\in\Zowa\}$
+\STATE ~~~~~broadcasts $\Zproj_i$ to a master machine
+\STATE The master calculates $\wowa$
+\end{algorithmic}
+\label{fig:alg2}
+\end{algorithm}
+
+FIXME: argue that regularization isn't really even needed at all.
 
 %\subsection{Implementation Tips}
 %
-Equations \ref{eq:afull} and \ref{eq:ahat} cannot be solved directly using off the shelf optimizers because existing optimizers do not support the non-standard regularization term $R(\matW\alpha)$.
+Equations \ref{eq:afull} and \ref{eq:ahat} cannot be solved directly using off the shelf optimizers because existing optimizers do not support the non-standard regularization term $\reg(\matW\alpha)$.
 In practice, it is sufficient to approximate this regularization by L2 regularization directly on the $\alpha$ vector:
 \begin{equation}
-\lambda R(\matW\alpha) \approx \lambda_2 \ltwo{\alpha}
+\lambda \reg(\matW\alpha) \approx \lambda_2 \ltwo{\alpha}
 .
 \label{eq:approxreg}
 \end{equation}
-Intuitively, this is because even when we want the parameter vector $\w$ to be sparse (and so are regularizing by $R = $ the L1 norm), we have no reason to believe that the $\alpha$ vector should be sparse.
+Intuitively, this is because even when we want the parameter vector $\w$ to be sparse (and so are regularizing by $\reg$ equal to the L1 norm), we have no reason to believe that the $\alpha$ vector should be sparse.
 The desired sparsity is induced by the regularization when solving for $\wmle_i$s and maintained in any linear combination of the $\wmle_i$s.
 The new $\lambda_2$ regularization parameter should be set by cross validation.
 This will be a fast procedure, however, because there are few data points to optimize over,
@@ -706,29 +760,33 @@ The simplest and most popular communication-efficient estimator is the averaging
 .
 \end{equation}
 Previous analysis of $\wave$ makes a number of limiting assumptions.
-\cite{mcdonald2009efficient} analyze $\wave$ in the special case of L2 regularized maximum entropy models.
-They provide tail bounds on $\ltwo{\wstar-\wave}$, showing that the variance $\ltwo{\E\wave-\wave}$ reduces as $O((nm)^{-1/2})$,
+\citet{mcdonald2009efficient} analyze $\wave$ in the special case of L2 regularized maximum entropy models.
+They provide tail bounds on $\ltwo{\wstar-\wave}$, 
+showing that the deviation $\ltwo{\E\wave-\wave}$ reduces as $O((nm)^{-1/2})$,
 but they do not show a reduction in bias.
 Their analysis uses a martingale technique that requires the radius of the dataset be independent of the size of the dataset.
 This is a particularly limiting assumption as even the simple case of
 normally-distributed data does not satisfy it.
-\cite{zhang2012communication} provide a more general analysis showing that the mean squared error (MSE) $\E\ltwo{\wstar-\wave}{}^2$ decays as $O((nm)^{-1} + n^{-2})$.
+\citet{zhang2012communication} provide a more general analysis showing that the mean squared error (MSE) $\E\ltwo{\wstar-\wave}{}^2$ decays as $O((nm)^{-1} + n^{-2})$.
 This matches the optimal MSE of $\wmle$ whenever $m<n$.
-Their analysis still requires a number of technical assumptions.
+Their analysis also requires a number of technical assumptions.
 For example, they assume the parameter space $\Theta$ is bounded.
 This assumption does not hold under the standard Bayesian interpretation of L2 regularization as a Gaussian prior of the parameter space.
 They further make strong convexity and 8\emph{th} order smoothness assumptions which guarantee that $\wmle_i$ is a ``nearly unbiased estimator'' of $\wstar$.
-%(As we will see in the next subsection,
-%recently developed information theoretic bounds show these assumptions are required to show a reduction in MSE to the single machine rate.)
-%All previous analysis of $\wave$ assumes that the likelihood $f$ is concave.
-In Section \ref{sec:anal}, we provide a simpler analysis of $\wave$ that relaxes these assumptions.
-In particular, our analysis does not require any quantities to be bounded or the likelihood to be concave.
+Most recently, \citet{rosenblatt2016optimality} analyze $\wave$ in the asymptotic regime as the number of data points $n\to\infty$.
+This analysis is more general than previous analyses, but it does not hold in the finite sample regime.
+In Section \ref{sec:anal}, we provide a simple analysis of $\wave$ that relaxes all previous assumptions of boundedness or convexity and holds in the finite sample regime.
+%In Section \ref{sec:anal}, we provide a simple analysis of $\wave$ that relaxes these assumptions.
+%In particular, our analysis does not require any quantities to be bounded or a convex loss.
 
 Other research has focused on modifications to the $\wave$ estimator to reduce bias.
-\cite{zinkevich2010parallelized} show that if the training sets partially overlap each other (instead of being disjoint), then the resulting estimator will have lower bias.
+\citet{zinkevich2010parallelized} show that if the training sets partially overlap each other (instead of being disjoint), then the resulting estimator will have lower bias.
+\citet{lee2015communication} and \citet{battey2015distributed} independently developed techniques for debiasing L1 regularized problems.
 %The authors admit their analysis is ``highly technical.''
-\cite{zhang2012communication} also provide a bootstrap average estimator,
-which works as follows.
+\citet{zhang2012communication} provides a debiasing technique that works for any estimator.
+%also provide a bootstrap average estimator,
+%which works as follows.
+It works as follows.
 Let $r\in(0,1)$, and $Z_i^r$ be a bootstrap sample of $Z_i$ of size $rn$.
 Then the bootstrap average estimator is
 \begin{equation}
@@ -741,7 +799,7 @@ where
 \waver &= \frac{1}{m}\sum_{i=1}^m \wmler_i
 ,
 \\
-\wmler_i &= \argmax_\w \sum_{(\x,y)\in Z_i^r} f(y,\trans\x\w) + \lambda R(\w)
+\wmler_i &= \argmax_\w \sum_{(\x,y)\in Z_i^r} \loss(y,\trans\x\w) + \lambda \reg(\w)
 .
 %\\
 %,
@@ -768,7 +826,7 @@ In Section \ref{sec:exp}, we show that our estimator has better empirical perfor
 %\end{equation}
 %It is easy to show that the two definitions are equivalent with standard calculus.
 
-\cite{liu2014distributed} propose a more Bayesian approach inspired by \cite{merugu2003privacy}.
+\citet{liu2014distributed} propose a more Bayesian approach inspired by \citet{merugu2003privacy}.
 Instead of averaging the model's parameters,
 they directly ``average the models'' with the following KL-average estimator:
 \begin{equation}
@@ -776,19 +834,21 @@ they directly ``average the models'' with the following KL-average estimator:
 .
 \end{equation}
 The minimization is performed via a bootstrap sample from the smaller models.
-This method has two main advantages.
+This method has three main advantages.
 First, it is robust to reparameterizations of the model.
 Second, it is statistically optimal for the class of non-interactive optimization methods.
 (We show in the next section that this optimality bound does not apply to our $\wowa$ estimator due to our semi-interactive setting.)
+Third, this method is general enough to work for any model,
+whereas our proposed OWA method works only for linear models.
 The main downside of the KL-average is that the minimization has a prohibitively high computational cost.
 Let $n^{kl}$ be the size of the bootstrap sample.
 Then the original implementation's MSE shrinks as $O((nm)^{-1}+(nn^{kl})^{-1})$.
 This implies that the bootstrap procedure requires as many samples as the original problem to get a MSE that shrinks at the same rate as the averaging estimator.
-\cite{han2016bootstrap} show a method to reduce this rate to $O((nm)^{-1}+(n^2n^{kl})^{-1})$ using control variates, but the procedure remains prohibitively expensive.
+\citet{han2016bootstrap} provide a method to reduce this rate to $O((nm)^{-1}+(n^2n^{kl})^{-1})$ using control variates, but the procedure remains prohibitively expensive.
 Their experiments show the procedure scaling only to datasets of size $nm\approx10^4$,
 whereas our experiments involve a dataset of size $nm\approx10^8$.
 
-Surprisingly, \cite{zhang2013divide} show that in the special case of kernel ridge regression,
+Surprisingly, \citet{zhang2013divide} show that in the special case of kernel ridge regression,
 a reduction in bias is not needed to have the MSE of $\wave$ decay at the optimal sequential rate.
 By a careful choice of regularization parameter,
 they cause $\wmle_i$ to have lower bias but higher variance,
@@ -805,15 +865,15 @@ Therefore, it is computationally cheaper to find a good $\lambda$ for our method
 \label{sec:bounds}
 
 Performance bounds come in two flavors: statistical and information theoretic.
-On the statistical side, \cite{liu2014distributed} show that for any non-interactive distributed estimator $\wq$,
-the quantity $\ltwo{\wq-\wmle}{}^2$ decays as $\Omega(\gamma^2_\wstar \I^{-1}_\wstar/n^2)$.
+On the statistical side, \citet{liu2014distributed} show that for any non-interactive distributed estimator $\what$,
+the quantity $\ltwo{\what-\wmle}{}^2$ decays as $\Omega(\gamma^2_\wstar \I^{-1}_\wstar/n^2)$.
 Here $\gamma_\wstar$ is the statistical curvature of the model and $\I_\wstar$ is the Fisher information.
-Furthermore, they show that $\wkl$ matches this bound.
+Furthermore, they show that their KL-averaging estimator $\wkl$ matches this bound.
 This bound is not relevant for our $\wowa$ estimator because of our semi-interactive setting.
 A crucial assumption of Liu and Ihler's analysis is that the merge function not depend on the data.
 %Furthermore, we directly optimize $\ltwo{\wq-\wstar}^2$ which is a more useful quantity in practice.
 
-\cite{shamir2014fundamental}, \cite{zhang2013information}, and \cite{garg2014communication} all provide information theoretic lower bounds on the sample complexity of non-interactive learning problems.
+\citet{shamir2014fundamental}, \citet{zhang2013information}, and \citet{garg2014communication} all provide information theoretic lower bounds on the sample complexity of non-interactive learning problems.
 As above, however, their results are not applicable in our semi-interactive setting.
 %provides general information theoretic bounds for what he terms learning with information constraints.
 %As a special case of Shamir's analysis is the non-interactive communication model where $q$ does not depend on the data.
@@ -823,7 +883,7 @@ Let the true parameter vector $\wstar$ be $k$-sparse.
 That is, $\lzero{\wstar} \le k$.
 %Then \cite{zhang2013information} showed that at least $\Omega(mk/\log m)$ bits of communication are required in the non-interactive setting,
 %and \cite{garg2014communication} improved this lower bound to $\Omega(mk)$.
-Surprisingly, \cite{braverman2015communication} show that the minimax optimal error rate for least squares regression requires $\Omega(m\cdot\min\{n,d\})$ bits of communication (independent of $k$) even in the fully interactive setting.
+Surprisingly, \citet{braverman2015communication} show that the minimax optimal error rate for least squares regression requires $\Omega(m\cdot\min\{n,d\})$ bits of communication (independent of $k$) even in the fully interactive setting.
 This is important because sparsity does not reduce the amount of communication required, and this bound does apply in our setting.
 
 \section{ANALYSIS}
@@ -833,7 +893,7 @@ In this section, we analyze the statistical performance of our $\wowa$ estimator
 As part of the analysis, we provide a novel proof of the statistical performance of $\wave$ with an easier to interpret constant factor.
 Our analysis is simpler and more general than previous analyses of distributed estimators.
 In particular, we do not assume that any random variables are bounded
-or that our likelihood function is concave.
+or that the loss is convex.
 
 \subsection{Conditions}
 
@@ -843,23 +903,25 @@ then explain why this condition is mild.
 
 \begin{defn}
 We say that a random vector $\x$ is \emph{sub-Gaussian} with variance proxy $\sigma^2$ if it obeys the following concentration bound.
-Let $t>0$, then with probability at least $1-\exp(-\sigma^2t^2/2)$,
-%\begin{equation}
-$
-\ltwo{\x} < t
-$.
-%\end{equation}
+%Let $t>0$, then with probability at least $1-\exp(-\sigma^2t^2/2)$,
+%$
+%\ltwo{\x} < t
+%$.
+\begin{equation}
+\prob{\ltwo{\x} < t} \ge 1 - \exp(-\sigma^2t^2/2)
+.
+\end{equation}
 \end{defn}
 
 Note in particular that if $\x$ is a Gaussian random vector with mean $\mu$ and covariance $\Sigma$,
 then $\Sigma^{1/2}(\x-\mu)$ is sub-Gaussian with $\sigma^2=1$.
 Sub-Gaussian random vectors have recently become an important tool in the analysis of high dimensional statistics.
-\cite{vershynin2010introduction} provides an accessible tutorial of these results.
+\citet{vershynin2010introduction} provides an accessible tutorial of these results.
 We now state our condition.
 
 \newtheorem*{sgt}{The Sub-Gaussian Tail (SGT) Condition}
 \begin{sgt}
-Let $\theta$ be an estimator trained on $n$ data points.
+Let $\what$ be an estimator trained on $n$ data points.
 %Let $t>0$ and $\sigma^2$ be a constant called the \emph{variance proxy}.
 %Then with probability at least $1-\exp(-\sigma^2t^2/2)$,
 %\begin{equation}
@@ -870,8 +932,7 @@ Let $\theta$ be an estimator trained on $n$ data points.
 %\end{equation}
 Then the random vector
 \begin{equation}
-%\Delta_\theta = \sqrt{n}\ltwo{\I^{1/2}_\wstar(\theta-\E\theta)}
-\Delta_\theta = \sqrt{n}{\I^{1/2}_\wstar(\theta-\E\theta)}
+\Delta_\what = \sqrt{n}{\I^{1/2}_\wstar(\what-\E\what)}
 \end{equation}
 is sub-Gaussian for some $\sigma^2$.
 Above, $\I_\wstar$ is the positive definite Fisher information matrix at the parameter vector's true value $\wstar$.
@@ -887,31 +948,33 @@ very strong results are known.
 %this condition is known as root-$n$ consistency.
 %In this case,
 %The error $\Delta_\theta$ is exactly Gaussian.
-Theorem 7.5.2 of \cite{lehmann1999elements} is a simple example that shows $\Delta_\theta$ is an isotropic centered Gaussian
+Theorem 7.5.2 of \citet{lehmann1999elements} is a simple example that shows $\Delta_\what$ is an isotropic centered Gaussian
 (and hence sub-Gaussian).
-Lehman's theorem requires only that $f$ be three times differentiable,
+Lehman's theorem requires only that $\loss$ be three times differentiable,
 the data points be i.i.d.,
 and some mild identifiability conditions.
-More sophisticated analyses show that the SGT Condition holds very generally.
-For example \cite{spokoiny2012parametricestimation} shows that $\Delta_\w$ is normally distributed even when the data points are correlated.
+More sophisticated analyses show that the SGT Condition holds very generally in the asymptotic regime.
+For example \citet{spokoiny2012parametricestimation} shows that $\Delta_\what$ is normally distributed even when the data points are correlated.
 
 Similar results hold in the non-asymptotic case $n<\infty$,
 but known results are less strong.
 Most non-asymptotic results of this form require that the data points also be sub-Gaussian.
-For example, \cite{negahban2009unified} considers the case when the data points are sub-Gaussian, the likelihood satisfies a ``restricted strong convexity condition,'' and the regularizer is decomposable.
-More recently, \cite{sivakumar2015beyond} showed the SGT Condition holds when the data are only sub-exponential.
-The strongest non-asymptotic results on the estimation error known to the authors are due to \cite{spokoiny2012parametricestimation}.
-Spokoiny does not require any conditions on the data,
+For example, \citet{negahban2009unified} considers the case when the data points are sub-Gaussian, the likelihood satisfies a ``restricted strong convexity condition,'' and the regularizer is decomposable.
+More recently, \citet{sivakumar2015beyond} showed the SGT Condition holds when the data are only sub-exponential.
+The strongest non-asymptotic results on the estimation error known to the authors are due to \citet{spokoiny2012parametricestimation}.
+Spokoiny does not place any distributional assumption on the data,
 but shows that the SGT Condition is satisfied only up to $t < O(n)$.
 
 Our analysis below requires that $\wmle_i$ satisfy the SGT Condition.
 This is strictly more general than the conditions in previous work.
-\cite{zhang2012communication} for example require that the parameter space $\Theta$ be bounded (in addition to other moment conditions).
+\citet{zhang2012communication} for example require that the parameter space $\Theta$ be bounded (in addition to other moment conditions).
 A bounded parameter space automatically implies that $\wmle_i$ satisfies the SGT Condition because every bounded random variable is sub-Gaussian by definition.
 
 %In conclusion,
 %there are many ways to verify that the SGT Condition holds.
 %Pick whichever one suits your problem.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Analysis of $\wave$}
 
@@ -942,36 +1005,45 @@ v_t =
 \end{equation}
 \end{theorem}
 
+The proof is provided in Appendix A of the supplemental material.
 
-Note that this reduction in variance is essentially optimal.
+Notice that this reduction in variance is essentially optimal.
 If we assume that $\wmle$ satisfies the SGT condition
 (in most cases this follows from $\wmle_i$ satisfying the SGT condition),
 then we are assuming that the variance of $\wmle$ reduces at the same $O(1/\sqrt{mn})$ rate.
-%By an argument similar to Equations \ref{eq:var1}-\ref{eq:var2},
-%we can show that the variance of the maximum likelihood estimator trained on all of the data is
-%\begin{equation}
-%\wmle - \E\wmle \sim \frac{1}{\sqrt{mn}} \normal{\zero}{\I^{-1}_{\wmle}}
-%\label{eq:var3}
-%\end{equation}
-%The only difference between Equations \ref{eq:var2} and \ref{eq:var3} is the location of the Fisher information matrix.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection {Analysis of $\wowa$}
 
 Unlike the $\wave$ estimator,
 $\wowa$ reduces both bias and variance.
-The $m$ and $\nowa$ parameters act as ``knobs'' that let us trade off lower statistical error for higher communication cost.
-%In particular, the number of machines $m$ acts as a ``knob'' that lets us
-%In this section, we present one main theorem and two supporting lemmas.
-%We begin our discussion with the following informal theorem statement.
-Before we present the formal analysis,
-we present a motivating informal analysis.
+%The $m$ and $\nowa$ parameters act as ``knobs'' that let us trade off lower statistical error for higher communication cost.
+To simplify the presentation, in this section we present only an informal version of this result.
+The formal statement and proof are contained in the supplemental material.
 
-\subsubsection{Informal Analysis}
-%The following theorem statement ignores constant factors.
-%Our main result can be stated with the following informal theorem.
-%We first state our main result informally,
-%then describe its implications.
-Our main result is captured in the following theorem.
+We begin our discussion by arguing that the parameter space $\Wowa$ is a good subspace to optimize over.
+Specifically, we bound the distance $\ltwo{\wstar-\proj{\W}\wstar}$,
+where $\proj{\W}$ denotes the orthogonal projection onto $\W$.
+
+\begin{lemma}
+\label{lem:proj}
+Assume $\wmle_i$ satisfies the SGT condition.
+With high probability, we have that
+\begin{equation}
+\ltwo{\wstar-\proj\W\wstar}
+\le
+O\left(
+\sqrt{\left(1-\frac{m}{d}\right)}\ltwo{\wstar - \wave}
+\right)
+.
+\end{equation}
+\end{lemma}
+
+The proof uses standard properties of projection matrices with sub-Gaussian columns.
+Due to space limitations, it is included in Appendix B of the supplement.
+
+Our main result is captured in the following informal theorem.
 \newtheorem*{theoreminf}{Theorem 2 (Informal)}
 \begin{theoreminf}
 With high probability, we have that
@@ -992,7 +1064,7 @@ O\!\left(\!\!
 The rightmost term above captures the error of the optimal parameter vector constrained to $\W$.
 That is, if
 \begin{equation}
-\wowastar = \argmin_{\w\in\W} \int_{\X\times\Y} \left(f(y,\trans\x\w) + \lambda R(\w)\right) d(\x,y)
+\wowastar = \argmin_{\w\in\W} \int_{\X\times\Y} \left(\loss(y,\trans\x\w) + \lambda \reg(\w)\right) d(\x,y)
 ,
 \end{equation}
 then the rightmost term is the error of $\ltwo{\wstar-\wowastar}$.
@@ -1004,73 +1076,6 @@ As $\nowa\to n$, this error approaches the error of the oracle estimator trained
 By increasing $m$ and $\nowa$ our estimator is closer to the sequential oracle
 at the expense of a higher communication cost.
 
-\subsubsection{Formal Analysis}
-
-In this section we give a version of Theorem 2 with explicit constant factors.
-The proof is divided into two lemmas,
-which we present first because they introduce important notation.
-In the first lemma we bound the distance $\ltwo{\wstar-\proj{\W}\wstar}$,
-where $\proj{\W}$ denotes the orthogonal projection onto $\W$.
-In the second lemma, we show that $\proj{\W}\wstar \approx \wowa$.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{lemma}
-\label{lem:proj}
-Assume $\wmle_i$ satisfies the SGT condition.
-Let $t>0$ and
-\begin{equation}
-\delta = 1-\exp((d-m)(-t+\ln(t+1)))
-.
-\label{eq:delta}
-\end{equation}
-Then we have that with probability at least $\delta$,
-\begin{equation}
-\ltwo{\wstar-\proj\W\wstar}
-\le
-(t+1)\sqrt{\frac\smin\smax\left(1-\frac{m}{d}\right)}\ltwo{\wstar - \wave}
-\end{equation}
-where $\smin$ and $\smax$ are the minimum and maximum eigenvalues of $\I_\wstar^{-1}$.
-\end{lemma}
-
-The proof uses standard properties of projection matrices with sub-Gaussian columns.
-Due to space limitations, it is included in Appendix A of the supplement.
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%Our next lemma bounds the error of $\wowa$ in terms of the error of other estimators whose error we know.
-Our next lemma shows that $\proj{\W}\wstar \approx \wowa$.
-%We introduce the following notation.
-
-\begin{lemma}
-Let $\qhi,\qlo : \mathbb{R}^+ \to \mathbb{R}^+$ be monotonically increasing functions such that for all points $\w\in\Theta$,
-\begin{align}
-F(\wstar) - F(\w) &\ge \qlo \left( \ltwo {\wstar - \w} \right)
-,
-\\
-F(\wstar) - F(\w) &\le \qhi \left( \ltwo {\wstar - \w} \right)
-.
-\end{align}
-Then we have that
-\begin{equation}
-\begin{aligned}
-\ltwo {\wstar-\wowa}
-&\le
-\ltwo{\wowastar-\wowa}
-\\
-&~~~+
-\qlo^{-1} \left(
-    \qhi \left( \ltwo {\wstar - \proj\W\wstar} \right)
-\right)
-.
-\label{eq:lemma2res}
-\end{aligned}
-\end{equation}
-\end{lemma}
-
-The proof of Lemma 2 is a straightforward application of the triangle inequality.
-It is contained in Appendix B of the supplement.
-We are now ready to state a formal version of the informal Theorem 2.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1133,7 +1138,7 @@ We are now ready to state a formal version of the informal Theorem 2.
 \\
 {\small\rotatebox{90}{\hspace{0.05cm}squared error $\ltwo{\wstar-\w}^2$}}
 &\hspace{-0.5cm}\mklambdaplot
-    {dat/logl1-star-logl2-autoreg-spike-log-1000-100-20.pdf.csv}
+    {dat.rev/logl1-star-logl2-autoreg-spike-log-1000-100-20.pdf.csv}
     {,ymin=10^-2,ymax=10^2,ytick={0.01,0.1,1,10,100}}{
     \node at (2,2.4) {\textcolor{brown}{$\wmle_i$}};
     \draw[->,brown] (2,2.3) -- (2.1,2);
@@ -1150,11 +1155,11 @@ We are now ready to state a formal version of the informal Theorem 2.
     \draw[->,very thin,darkgreen] (0.9,0.3) -- (1.2,0.3);
     }
 &\hspace{-0.5cm}\mklambdaplot
-    {dat/logl1-star-logl2-auto-spike-log-1000-100-100.pdf.csv}
+    {dat.rev/logl1-star-logl2-auto-spike-log-1000-100-100.pdf.csv}
     {,ymin=10^-3,ymax=10^2,ytick={0.001,0.01,0.1,1,10,100}}
     {}
 &\hspace{-0.5cm}\mklambdaplot
-    {dat/logl1-star-logl2-auto-spike-log-1000-1000-100.pdf.csv}
+    {dat.rev/logl1-star-logl2-auto-spike-log-1000-1000-100.pdf.csv}
     {,ymin=10^-1,ymax=10^3,ytick={0.1,1,10,100,1000}}
     {}
 \\
@@ -1173,39 +1178,6 @@ We are now ready to state a formal version of the informal Theorem 2.
     }
 \label{fig:lambda}
 \end{figure*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newtheorem*{theoremformal}{Theorem 2 (Formal)}
-\begin{theoremformal}
-Assume that $\wmle_i$ and $\alpha$ satisfy the SGT condition.
-Let $t>0$ and
-\begin{equation}
-%\delta = 1-\exp((d-m)(-t+\ln(t+1)))
-\delta = (1-\exp((d-m)(-t+\ln(t+1))))(1-\exp(-t))
-.
-\end{equation}
-Then, with probability at least $\delta$,
-\begin{equation}
-\begin{aligned}
-&\ltwo{\wstar-\wowa}
-\\
-&\le
-%\ltwo{\wowastar-\wowa}
-\ltwo{\wowastar-\E\wowa}
-+ \sqrt{\frac{v_t}{m\nowa}}
-\\
-&+
-\qlo^{-1}\bigg(\qhi\bigg((t+1)\sqrt{\frac{\smin}{\smax}\left(1-\frac{m}{d}\right)}\ltwo{\wstar-\wave}\bigg)\bigg)
-\end{aligned}
-\end{equation}
-\end{theoremformal}
-
-\begin{proof}
-Bound the left term of Equation \ref{eq:lemma2res} using the procedure we used for Theorem 1.
-Then use Lemma 1 to bound $\ltwo{\wstar-\proj\W\wstar}$ in the right term.
-%Then use Lemma 1 to bound the rightmost term.
-\end{proof}
 
 \newpage
 
@@ -1427,8 +1399,11 @@ $\wowa$ even scales better than $\wmle$ in some regimes.
 \vspace{-0.1in}
 We now evaluate our estimator on real world data from the KDD 2012 Cup \citep{kddcup2012}.
 The goal is to predict whether a user will click on an ad from the Tencent internet search engine.
-This dataset was previously used to evaluate the performance of $\wboot$ \citep{zhang2012communication}.
-This dataset is too large to fit on a single machine.
+%This dataset was previously used to evaluate the performance of $\wboot$ \citep{zhang2012communication}.
+This dataset was previously used to evaluate the performance of the bootstrap average estimator \citep{zhang2012communication}.
+This dataset is too large to fit on a single machine,
+so we must use distributed estimators,
+and we do not provide results of the oracle estimator $\wmle$ in our figures.
 There are 235,582,879 distinct data points,
 each of dimension 741,725.
 The data points are sparse, so we use the L1 norm to encourage sparsity in our final solution.
@@ -1436,6 +1411,7 @@ The regularization strength was set using cross validation in the same manner as
 For each test, we split the data into 80 percent training data and 20 percent test data.
 The training data is further subdivided into 128 partitions,
 one for each of the machines used.
+It took about 1 day to train the local model on each machine.
 
 Our first experiment tests the sensitivity of the $\nowa$ parameter on large datasets.
 We fix $m=128$, and allow $\nowa$ to vary from $2^0$ to $2^{20}$,
@@ -1446,6 +1422,9 @@ Our $\wowa$ estimator has lower loss than the $\wave$ using only 16 data points 
 and $\wowa$ has converged to its final loss value with only 1024 data points per machine (approximately $2.7\times10^{-6}$ percent of the full training set).
 This justifies our claim that only a small number of data points are needed for the second round of optimization,
 and so the communication complexity of $\wowa$ is essentially the same as $\wave$.
+The computation was also very fast.
+Even when $\nowa=2^{20}$ computing the merged model took only several minutes,
+which is negligible compared to the approximately 1 day it took to train the models on the individual machines. 
 
 \begin{figure}[h!]
 \plots{
@@ -1584,15 +1563,18 @@ As part of our analysis, we also provided a more general analysis of the averagi
 
 \clearpage
 
-\section*{Appendix: Proof of Theorem 1}
+\section*{Appendix A: Proof of Theorem 1}
 We have by the triangle inequality that
 \begin{equation}
 \ltwo{\wstar-\wave} \le \ltwo{\wstar-\E\wave} + \ltwo{\E\wave-\wave}
 .
 \label{eq:biasvar}
 \end{equation}
-The left term above captures the estimator's bias and the right term the variance.
-First we consider the bias.
+The leftmost term above is the estimator's bias and the rightmost term the deviation.
+We will bound each in turn.
+
+\subsection*{Step 1: the bias}
+It is straightforward to see that averaging does not improve the bias.
 By the linearity of expectation, we have that
 \begin{align}
 \E\wave
@@ -1613,7 +1595,11 @@ $\ltwo{\wstar-\E\wave}
 $.
 %In words, the bias of the combined averaging estimator is the same as the bias of the estimator on an individual machine.
 
-Now we consider the variance.
+\subsection*{Step 2: the deviation}
+The deviation term requires more work.
+We first show that the deviation is the sum of subgaussian random variables.
+The result will follow because this sum is also subgaussian.
+
 We have that
 \begin{align}
 &\ltwobig{\wave-\E\wave}
@@ -1634,40 +1620,33 @@ We have that
 .
 \end{align}
 %Equation \ref{eq:var1} follows by multiplying inside the norm by $1=\sqrt{n}\I_{\wstar}^{1/2}\I_{\wstar}^{-1/2}/\sqrt{n}$ and applying the definition of $\Delta_{\wmle_i}$.
-Notice that each of the $\Delta_{\wmle_i}$ are i.i.d.\ sub-Gaussian random vectors.
-Sub-Gaussian random vectors inherit the following basic property from centered Gaussian random vectors:
-The sum of $m$ i.i.d.\ sub-Gaussians has the same distribution as $\sqrt{m}$ times the sub-Gaussian.
-% cshelton: what is Delta_1?  Is it defined just as the rv that causes
-% the sum to be distributed portionally to it?  Perhaps we can clarify?
-That is, $\sum_{i=1}^m \Delta_{\wmle_i} \sim \sqrt{m}\Delta_{\wmle_1}$.
-Substituting into Equation \ref{eq:var1} gives
-\begin{equation}
-\ltwobig{\wave-\E\wave}
-\sim
-\frac{1}{\sqrt{mn}}\ltwobig{\I^{1/2}_\wstar\Delta_{\wmle_1}}
-.
-\label{eq:var2}
-\end{equation}
-
-%Centering the distribution and applying Equation \ref{eq:expwave} gives
+Notice that each of the $\Delta_{\wmle_i}$ are i.i.d.\ sub-Gaussian random vectors with variance proxy $\sigma$.
+The sum of $m$ subgaussians is also subgaussian with variance proxy $\sqrt{m}\sigma$.
+%Substituting into Equation \ref{eq:var1} gives
 %\begin{equation}
-%\E\wave-\wave
+%\ltwobig{\wave-\E\wave}
 %\sim
-%\normal{\zero}{\frac{1}{nm}I^{-1}}
+%\frac{1}{\sqrt{mn}}\ltwobig{\I^{1/2}_\wstar\Delta_{\wmle_1}}
+%.
+%\label{eq:var2}
 %\end{equation}
-%In the last step we used the fact that adding a sub-Gaussian random variable to itself $m$ times is equivalent lto multiplying the Gaussian by $\sqrt{m}$.
-%So bounding the variance reduces to bounding the norm of a Gaussian.
-
-Our last step is to bound the norm on the right hand side of Equation \ref{eq:var2}.
-Theorem 2.1 from \cite{hsu2012tail} gives a bound on the norm of a positive semidefinite matrix times a sub-Gaussian random variable.
+%Our last step is to bound the norm on the right hand side of Equation \ref{eq:var2}.
+Theorem 2.1 from \citet{hsu2012tail} gives a bound on the norm of a positive semidefinite matrix times a sub-Gaussian random variable.
 Applying the theorem gives that %with probability at least $1-\exp(-t)$,
 \begin{equation}
 \prob{
-    \ltwobig{\I^{-1/2}_\wstar\Delta_1} < \sqrt{v_t}
+    \ltwobig{\I^{-1/2}_\wstar\sum_{i=1}^m\Delta_{\wmle_i}} < \sqrt{v_t}
 }
 \ge 1-\exp(-t)
 ,
 \end{equation}
+%\begin{equation}
+%\prob{
+    %\ltwobig{\I^{-1/2}_\wstar\Delta_1} < \sqrt{v_t}
+%}
+%\ge 1-\exp(-t)
+%,
+%\end{equation}
 where $v_t$ is defined as in Equation \ref{eq:vt}.
 And so the variance of $\wave$ satisfies
 \begin{equation}
@@ -1706,9 +1685,203 @@ And so the variance of $\wave$ satisfies
 %\end{equation}
 Substituting Equations \ref{eq:expwave} and \ref{eq:ct1} into Equation \ref{eq:biasvar} gives the stated result.
 
-\section*{Appendix A: Proof of Lemma 1}
+\begin{lemma}
+Let $\x_1,...,\x_m$ be a sequence of i.i.d. subgaussian random vectors with variance proxy $\sigma$.
+Then the random vector $\sum_{i=1}^m \x_i$ is subgaussian with variance proxy $\sqrt{m}\sigma$.
+\end{lemma}
+
+\begin{proof}
+The lemma follows from the following straightforward calculation of the moment generating function.
+\begin{align}
+\E{\exp(\trans\alpha\sum_{i=1}^m\x_i)}
+%&= \E{\exp(\sum_{i=1}^m\trans\alpha\x_i)}
+%\\
+&= \E{\prod_{i=1}^m\exp(\trans\alpha\x_i)}
+\\
+\label{eq:varindep}
+&= \prod_{i=1}^m\E{\exp(\trans\alpha\x_i)}
+\\
+&\le \prod_{i=1}^m\exp(\ltwo{\alpha}^2\sigma^2/2)
+\\
+&= \exp(\ltwo{\alpha}^2 (\sqrt{m}\sigma)^2 /2)
+\end{align}
+%Line \eqref{eq:varindep} above follows from
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\section*{Appendix B}
+
+\begin{lemma}
+\label{lemma:wwstar}
+Assume the $\wmle_i$s satisfy the SGT condition.
+Let $t>0$. Then,
+\begin{equation}
+\prob{\min_{\w\in\Wowa}\ltwo{\w-\wstar} \ge \sqrt{\frac{v_t}{n}} } \le \exp(-tm)
+.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Straightforward calculations give us
+\begin{align}
+&\prob{\min_{\w\in\Wowa} \ltwo{\w-\wstar} \ge \sqrt{\frac{v_t}{n}}} 
+\\
+\le &
+\prob{\min_{i=[m]} \ltwo{\wmle_i-\wstar} \ge \sqrt{\frac{v_t}{n}}}
+\\
+= &
+\prob{\forall_{i\in[m]} \ltwo{\wmle_i-\wstar} \ge \sqrt{\frac{v_t}{n}}} 
+\\
+%= &
+%\prod_{i\in[m]}
+%\prob{\ltwo{\wmle_i-\wstar} \ge \sqrt{\frac{v_t}{n}} }
+%\\
+= &
+\left(\prob{\ltwo{\wmle_1-\wstar} \ge \sqrt{\frac{v_t}{n}}} \right)^m
+\\
+= &
+\left(
+\prob{\ltwo{(n\I)^{-1/2}\Delta_{\wmle_1}} \ge \sqrt{\frac{v_t}{n}} }
+\right)^m
+\\
+= &
+\left(
+\prob{\ltwo{\I^{-1/2}\Delta_{\wmle_1}} \ge \sqrt{v_t} }
+\right)^m
+\\
+\le &
+\exp(-tm)
+\end{align}
+\end{proof}
+
+\newtheorem*{cont}{The Hessian Condition}
+\begin{cont}
+For any vector $\alpha$ satisfying $\ltwo{\alpha}\le\ltwo{\wstar-\wowafull}$, we have that
+\begin{equation}
+\label{eq:hessiancondition}
+\qlo\ltwo{\alpha}^2 \le \Loss(\wstar+\alpha) - \Loss(\alpha) \le \qhi\ltwo{\alpha}^2
+.
+\end{equation}
+Note that as $n\to\infty$, $\ltwo{\wstar-\wowafull}\to0$.
+In this regime,  \eqref{eq:hessiancondition} is equivalent to requiring that the condition number of the Hessian $\nabla^2\Loss(\wstar)$ be $\qhi/\qlo$.
+\end{cont}
+
+\begin{theorem}
+\label{theorem:wowafull}
+Assume the Hessian Condition and that the $\wmle_i$s satisfy the SGT condition.
+Then we have that with probability at least $1-\exp(-tm)$, 
+\begin{equation}
+%\ltwo{\wowafull-\wstar} \le \sqrt{\frac{\qhi}{\qlo}}\ltwo{\proj{\Wowa}\wstar}
+%\ltwo{\wowafull-\wstar} \le \sqrt{\frac{\qhi}{\qlo}}\sqrt{\frac{v_t}{n}}
+\ltwo{\wowafull-\wstar} \le \sqrt{\bigg(\frac{\qhi}{\qlo}\bigg)\bigg(\frac{v_t}{n}\bigg)}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By the Hessian condition, we have that
+\begin{align}
+\qlo\ltwo{\wowafull-\wstar}^2
+&\le
+\Loss(\wowafull) - \Loss(\wstar)
+\\
+&\le
+\Loss(\proj{\Wowa}\wstar) - \Loss(\wstar)
+\\
+&\le
+\qhi\ltwo{\proj{\Wowa}\wstar}^2
+.
+\end{align}
+And so
+\begin{equation}
+\ltwo{\wowafull-\wstar} \le \sqrt{\frac{\qhi}{\qlo}}\ltwo{\proj{\Wowa}\wstar}
+.
+\end{equation}
+The result follows by Lemma \ref{lemma:wwstar}.
+\end{proof}
+
+\begin{theorem}
+\label{theorem:wowa}
+Assume the Hessian Condition and that both the $\wmle_i$s and $\alpha$ satisfy the SGT condition.
+Then we have that with probability at least $1-\exp(-tm)$, 
+\begin{equation}
+\ltwo{\wowa-\wstar} \le 
+\sqrt{\frac{v_t}{m\nowa}}
++
+\sqrt{\bigg(\frac{\qhi}{\qlo}\bigg)\bigg(\frac{v_t}{n}\bigg)} 
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We have by the triangle inequality that
+\begin{equation}
+\ltwo{\wowa-\wstar} \le \ltwo{\wowa-\wowafull} + \ltwo{\wowafull-\wstar}
+.
+\end{equation}
+Theorem \ref{theorem:wowafull} bounds the left term, 
+and the SGT condition combined with Theorem \ref{} bounds the right term.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\section*{Appendix B: Proof of Lemma 1}
+
+%\begin{lemma}
+%\label{lem:proj}
+%Assume the $\wmle_i$s satisfy the SGT condition.
+%Let $t>0$ and
+%\begin{equation}
+%\delta = 
+%\big(1-\exp((d-m)(-t+\ln(t+1)))\big)
+%.
+%\label{eq:delta}
+%\end{equation}
+%Then we have that with probability at least $\delta$,
+%\begin{equation}
+%\ltwo{\wstar-\proj\W\wstar}
+%\le
+%(t+1)\sqrt{\frac\smin\smax\left(1-\frac{m}{d}\right)}\ltwo{\wstar - \wave}
+%\end{equation}
+%where $\smin$ and $\smax$ are the minimum and maximum eigenvalues of $\I_\wstar^{-1}$.
+%\end{lemma}
+
+\begin{lemma}
+\label{lem:proj}
+Assume the $\wmle_i$s satisfy the SGT condition.
+Let $t>0$ and
+\begin{equation}
+\delta = 
+\big(1-\exp((d-m)(-t+\ln(t+1)))\big)
+\big(1-\exp(-t)\big)
+.
+\label{eq:delta}
+\end{equation}
+Then we have that with probability at least $\delta$,
+\begin{equation}
+\ltwo{\wstar-\proj\W\wstar}
+\le
+O\left(
+(t+1)\sqrt{\left(1-\frac{m}{d}\right)}\ltwo{\wstar - \wave}
+\right)
+.
+\end{equation}
+%where $\smin$ and $\smax$ are the minimum and maximum eigenvalues of $\I_\wstar^{-1}$.
+\end{lemma}
+The proof of lemma 1 is broken into three steps.
+
+\subsection*{Step 1: Decompose the distance}
 
 Define the space $\Gamma=\vecspan\{\wmle_i-\E\wave\}_{i=1}^m$.
+%Define the spaces 
+%%\begin{align}
+%$\Gamma_1 = \affspan\{\wmle_i-\E\wave\}_{i=1}^m$
+%and
+%%\\
+%$\Gamma =\vecspan\Gamma_1$
+%.
+%\end{align}
 Our proof strategy is to bound the distance $\ltwo{\wstar-\proj\Gamma\wstar}$ and then show that $\Gamma\approx\W$.
 Specifically, we have
 \begin{align}
@@ -1736,13 +1909,13 @@ Specifically, we have
 \ltwo{\proj\Gamma(\wstar-\wave) - \proj\W\proj\Gamma(\wstar-\wave)}
 %\ltwo{\proj\Gamma(\wstar-\wave) - \proj\W(\wstar-\wave)}
 %\label{eq:gammatriangle}
-%\\
-%&=
-%\ltwo{(I-\proj\Gamma)(\wstar - \wave)}
-%\nonumber
-%\\
-%&~~~+
-%\ltwo{(\proj\Gamma-\proj\W)(\wstar - \wave)}
+\\
+&=
+\ltwo{(I-\proj\Gamma)(\wstar - \wave)}
+\nonumber
+\\
+&~~~+
+\ltwo{(I-\proj\W)\proj\Gamma(\wstar - \wave)}
 .
 \label{eq:i-projW}
 \end{align}
@@ -1753,6 +1926,8 @@ and Equation \ref{eq:i-projW} by the triangle inequality.
 %The column space of $\matW$ is $\W$.
 We now bound each of the terms in Equation \ref{eq:i-projW} separately,
 beginning with the leftmost.
+
+\subsection*{Step 2: Bounding the error of $(I-\proj{\Gamma})$}
 
 %We can write
 %\begin{equation}
@@ -1788,7 +1963,8 @@ The $i$th column of matrix $\sqrt{n}\I^{1/2}_{\wstar}G$ is equal to $\Delta_{\wm
 %\end{equation}
 Let $U\Sigma \trans V$ be the singular value decomposition of $\sqrt{n}\I^{1/2}_{\wstar}G$,
 where $U$ and $V$ are orthogonal matrices and $\Sigma$ is the diagonal matrix of singular values.
-Substituting into Equation \ref{eq:ggpinv} gives
+%Substituting into Equation \ref{eq:ggpinv} gives
+Then we have that
 \begin{align}
 \proj\Gamma
 &= \I^{-1/2} (U\Sigma \trans V)\pinv{(U \Sigma \trans V)} \I^{1/2}
@@ -1812,7 +1988,7 @@ This implies that
 &=
 \ltwo{\I^{-1/2} U(I-\Sigma \pinv\Sigma )\trans U \I^{1/2}(\wstar - \wave)}
 \\
-&=
+&\le
 \sqrt{\smin}\ltwo{U(I-\Sigma \pinv\Sigma )\trans U \I^{1/2}(\wstar - \wave)}
 \label{eq:fromdefsmin}
 \\
@@ -1824,11 +2000,11 @@ This implies that
 Equation \ref{eq:fromdefsmin} follows from the definition of $\smin$ as the smallest eigenvector of $\I$,
 and Equation \ref{eq:fromrotinvl2} follows from the rotational invariance of the L2 norm.
 The matrix $(I-\Sigma\pinv\Sigma)$ contains 1s in the first $d-m$ diagonal entries, and zeros everywhere else.
-By the rotational invariance of the sub-Gaussian distribution (Lemma 5.9 of Vershynin, 2011),
+By the rotational invariance of sub-Gaussian distributions (Lemma 5.9 of Vershynin, 2011),
 $U$ and $V$ are distributed uniformly over the orthogonal group of matrices.
 %Because $U$ is distributed uniformly over the orthogonal group,
 Therefore the operator $(I-\Sigma\pinv\Sigma)\trans U$ projects a vector onto a subspace of dimension $d-m$ chosen uniformly at random.
-Lemma 2.2 from \cite{dasgupta2003elementary} provides a bound for this situation.
+Lemma 2.2 from \citet{dasgupta2003elementary} provides a bound for this situation.
 The lemma states that for any vector $\x$, for all $t>0$, with probability at least $1-\exp((d-m)(-t+\ln (t+1)))$,
 \begin{align}
 \ltwo{(I-\Sigma\pinv\Sigma)\trans U \x} \le (t+1) \sqrt{1-\frac{m}{d}}
@@ -1850,6 +2026,54 @@ Setting $\x=\I^{1/2}(\wstar-\wave)$ gives
 ,
 \end{align}
 which bounds the leftmost term of Equation \ref{eq:i-projW}.
+
+%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Step 3: Bounding the error of $(I-\proj{\Wowa})\proj{\Gamma}$}
+
+Recall that the set $\{\wmle_i-\E\wave\}_{i=1}^m$ is a basis for the space $\Gamma$.
+Therefore, we can write
+\begin{equation}
+\proj\Gamma(\wstar-\wave) = \sum_{i=1}^d \gamma_i(\wmle_i - \E\wave)
+\end{equation}
+for some set of $\gamma_i$s.
+Furthermore, because $\Gamma$ is an affine space,
+we have that $\sum_{i=1}^d\gamma_i=1$.
+Therefore, we get that
+\begin{align}
+&\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!
+\ltwo{(I-\proj\Wowa)\proj\Gamma(\wstar-\wave)}
+\\
+&= \ltwo{(I-\proj\Wowa)\sum_{i=1}^d \gamma_i(\wmle_i - \E\wave)}
+\\
+&= \ltwo{(I-\proj\Wowa)\sum_{i=1}^d \gamma_i\E\wave}
+\\
+&= \ltwo{(I-\proj\Wowa)\E\wave}
+%\\
+%&\le \max_{i=1...m} \ltwo{\wmle_i - \E\wave}
+.
+\end{align}
+The $\wmle_i$ vectors form a basis for $\Wowa$.
+Therefore, the minimum distance from $\E\wave$ to $\Wowa$ is upper bounded by the minimum distance from $\E\wave$ to any particular $\wmle_i$.
+In notation,
+\begin{align}
+\ltwo{(I-\proj\Wowa)\E\wave}
+&\le \min_{i=1...m} \ltwo{\wmle_i - \E\wave}
+\\
+&=   \frac{1}{\sqrt n} \min_{i=1...m} \ltwo{\I^{-1/2}\Delta_{\wmle_i}}
+\end{align}
+Theorem 2.1 from \citet{hsu2012tail} gives a bound on the norm of a positive semidefinite matrix times a sub-Gaussian random variable.
+Applying this bound to $\ltwo{\I^{-1/2}\Delta_{\wmle_i}}$ gives
+\begin{align}
+\prob{\ltwo{\I^{-1/2}\Delta_{\wmle_i}} \le \sqrt{v_t}} \ge 1 - \exp(-t)
+\end{align}
+where $v_t$ is defined as in Equation \ref{eq:vt}.
+This implies
+\begin{align}
+\prob{\min_{i=1...m} \ltwo{\I^{-1/2}\Delta_{\wmle_i}} \le \sqrt{v_t}} \ge 1 - \exp(-mt)
+%\prob{\ltwo{(I-\proj\Wowa)\E\wave} \le \sqrt{\frac{v_t}{n}}} \ge (1 - \exp(-t))^m
+\end{align}
+
 
 %Now we bound the rightmost term.
 %We have that
@@ -1880,6 +2104,41 @@ which bounds the leftmost term of Equation \ref{eq:i-projW}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section*{Appendix B: Proof of Lemma 2}
+
+%Our next lemma bounds the error of $\wowa$ in terms of the error of other estimators whose error we know.
+Our next lemma shows that $\proj{\W}\wstar \approx \wowa$.
+%We introduce the following notation.
+
+\begin{lemma}
+Let $\qhi,\qlo : \mathbb{R}^+ \to \mathbb{R}^+$ be monotonically increasing functions such that for all points $\w\in\Theta$,
+\begin{align}
+F(\wstar) - F(\w) &\ge \qlo \left( \ltwo {\wstar - \w} \right)
+,
+\\
+F(\wstar) - F(\w) &\le \qhi \left( \ltwo {\wstar - \w} \right)
+.
+\end{align}
+Then we have that
+\begin{equation}
+\begin{aligned}
+\ltwo {\wstar-\wowa}
+&\le
+\ltwo{\wowastar-\wowa}
+\\
+&~~~+
+\qlo^{-1} \left(
+    \qhi \left( \ltwo {\wstar - \proj\W\wstar} \right)
+\right)
+.
+\label{eq:lemma2res}
+\end{aligned}
+\end{equation}
+\end{lemma}
+
+The proof of Lemma 2 is a straightforward application of the triangle inequality.
+It is contained in Appendix B of the supplement.
+We are now ready to state a formal version of the informal Theorem 2.
+
 By the triangle inequality, we have that
 \begin{align}
 \ltwo{\wstar-\wowa}
@@ -1912,5 +2171,38 @@ By the definition of $\qhi$ and $\qlo$, we have
 %\end{equation}
 %Applying Lemma \ref{lem:proj} gives the stated result.
 Applying $\qlo^{-1}$ to both sides and substituting into Equation \ref{eq:wstarwowa} gives the stated result.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtheorem*{theoremformal}{Theorem 2 (Formal)}
+\begin{theoremformal}
+Assume that $\wmle_i$ and $\alpha$ satisfy the SGT condition.
+Let $t>0$ and
+\begin{equation}
+%\delta = 1-\exp((d-m)(-t+\ln(t+1)))
+\delta = (1-\exp((d-m)(-t+\ln(t+1))))(1-\exp(-t))
+.
+\end{equation}
+Then, with probability at least $\delta$,
+\begin{equation}
+\begin{aligned}
+&\ltwo{\wstar-\wowa}
+\\
+&\le
+%\ltwo{\wowastar-\wowa}
+\ltwo{\wowastar-\E\wowa}
++ \sqrt{\frac{v_t}{m\nowa}}
+\\
+&+
+\qlo^{-1}\bigg(\qhi\bigg((t+1)\sqrt{\frac{\smin}{\smax}\left(1-\frac{m}{d}\right)}\ltwo{\wstar-\wave}\bigg)\bigg)
+\end{aligned}
+\end{equation}
+\end{theoremformal}
+
+\begin{proof}
+Bound the left term of Equation \ref{eq:lemma2res} using the procedure we used for Theorem 1.
+Then use Lemma 1 to bound $\ltwo{\wstar-\proj\W\wstar}$ in the right term.
+%Then use Lemma 1 to bound the rightmost term.
+\end{proof}
 
 \end{document}
