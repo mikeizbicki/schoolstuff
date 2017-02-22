@@ -14,45 +14,45 @@ You're missing a field name---line 177 of file paper.bib
 I'm skipping whatever remains of this entry
 Warning--empty journal in kddcup2012
 Warning--empty publisher in vershynin2010introduction
-You've used 23 entries,
+You've used 22 entries,
             2773 wiz_defined-function locations,
-            714 strings with 9145 characters,
-and the built_in function-call counts, 13191 in all, are:
-= -- 1167
-> -- 824
-< -- 20
-+ -- 278
-- -- 254
-* -- 1038
-:= -- 1933
-add.period$ -- 71
-call.type$ -- 23
-change.case$ -- 151
-chr.to.int$ -- 22
-cite$ -- 48
-duplicate$ -- 613
-empty$ -- 1030
-format.name$ -- 287
-if$ -- 2837
+            707 strings with 8965 characters,
+and the built_in function-call counts, 12753 in all, are:
+= -- 1125
+> -- 803
+< -- 19
++ -- 271
+- -- 248
+* -- 1003
+:= -- 1867
+add.period$ -- 68
+call.type$ -- 22
+change.case$ -- 146
+chr.to.int$ -- 21
+cite$ -- 46
+duplicate$ -- 593
+empty$ -- 992
+format.name$ -- 278
+if$ -- 2745
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 24
-newline$ -- 123
-num.names$ -- 94
-pop$ -- 341
+missing$ -- 23
+newline$ -- 118
+num.names$ -- 90
+pop$ -- 333
 preamble$ -- 1
-purify$ -- 129
+purify$ -- 125
 quote$ -- 0
-skip$ -- 519
+skip$ -- 503
 stack$ -- 0
-substring$ -- 549
-swap$ -- 142
+substring$ -- 528
+swap$ -- 141
 text.length$ -- 11
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 248
+type$ -- 237
 warning$ -- 2
-while$ -- 110
+while$ -- 105
 width$ -- 0
-write$ -- 299
+write$ -- 286
 (There were 2 error messages)

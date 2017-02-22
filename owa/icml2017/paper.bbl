@@ -1,4 +1,4 @@
-\begin{thebibliography}{23}
+\begin{thebibliography}{22}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -17,12 +17,6 @@ Mark Braverman, Ankit Garg, Tengyu Ma, Huy~L Nguyen, and David~P Woodruff.
 \newblock Communication lower bounds for statistical estimation problems via a
   distributed data processing inequality.
 \newblock \emph{arXiv preprint arXiv:1506.07216}, 2015.
-
-\bibitem[Dasgupta and Gupta(2003)]{dasgupta2003elementary}
-Sanjoy Dasgupta and Anupam Gupta.
-\newblock An elementary proof of a theorem of {J}ohnson and {L}indenstrauss.
-\newblock \emph{Random Structures \& Algorithms}, 22\penalty0 (1):\penalty0
-  60--65, 2003.
 
 \bibitem[Garg et~al.(2014)Garg, Ma, and Nguyen]{garg2014communication}
 Ankit Garg, Tengyu Ma, and Huy Nguyen.

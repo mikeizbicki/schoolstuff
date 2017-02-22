@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2016.8.12)  18 FEB 2017 01:40
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2016.8.12)  22 FEB 2017 01:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -673,9 +673,6 @@ runsystem(bibtex paper)...executed safely (allowed).
 
 LaTeX Warning: Label `eq:var1' multiply defined.
 
-
-LaTeX Warning: Label `lem:proj' multiply defined.
-
 )
 \openout1 = `paper.aux'.
 
@@ -755,15 +752,25 @@ Package pgfplots notification 'compat/show suggested version=true': you might b
 enefit from \pgfplotsset{compat=1.11} (current compat level: 1.8).
 
 \c@@affil@anon=\count157
-LaTeX Font Info:    Try loading font information for U+msa on input line 444.
+LaTeX Font Info:    Try loading font information for U+msa on input line 445.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 444.
+LaTeX Font Info:    Try loading font information for U+msb on input line 445.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+Underfull \hbox (badness 1009) in paragraph at lines 451--470
+[]\OT1/cmr/m/n/10 We present the OWA al-go-rithm for dis-
+ []
+
+
+Underfull \hbox (badness 1259) in paragraph at lines 451--470
+\OT1/cmr/m/n/10 and the to-tal num-ber of bits trans-fered
+ []
+
+
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
@@ -771,112 +778,97 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 ]
-Overfull \hbox (2.21283pt too wide) in paragraph at lines 622--665
+Overfull \hbox (2.21283pt too wide) in paragraph at lines 633--676
 []  []
  []
 
 [2]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-Underfull \hbox (badness 2591) in paragraph at lines 757--758
+Underfull \hbox (badness 2591) in paragraph at lines 768--769
 []\OT1/cmr/m/n/10 The sim-plest and most pop-u-lar communication-
  []
 
 [3]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 7814) has occurred while \output is active []
 
  [4]
-Underfull \vbox (badness 3861) has occurred while \output is active []
-
- [5]
-Overfull \hbox (4.18184pt too wide) detected at line 1060
-[] \OMS/cmsy/m/n/10 ^^T \OML/cmm/m/it/10 O  [][]
- []
-
-[6]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [7]
-[8
+ [5]
+Underfull \hbox (badness 4024) in paragraph at lines 1146--1147
+[]\OT1/cmr/m/n/10 We have that with prob-a-bil-ity at most
+ []
+
+[6] [7]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [8]
+[9
 
 ] (./paper.bbl
-Underfull \hbox (badness 1616) in paragraph at lines 46--49
+Underfull \hbox (badness 1616) in paragraph at lines 40--43
 \OT1/cmr/m/n/10 Tay-lor.  Communication-efficient sparse re-gres-
  []
 
 
-Underfull \hbox (badness 3302) in paragraph at lines 46--49
+Underfull \hbox (badness 3302) in paragraph at lines 40--43
 \OT1/cmr/m/n/10 sion: a one-shot ap-proach.  \OT1/cmr/m/it/10 arXiv preprint
  []
 
 
-Underfull \hbox (badness 2005) in paragraph at lines 70--74
+Underfull \hbox (badness 2005) in paragraph at lines 64--68
 []\OT1/cmr/m/n/10 Srujana Merugu and Joy-deep Ghosh.  Privacy-
  []
 
 
-Underfull \hbox (badness 1297) in paragraph at lines 115--120
+Underfull \hbox (badness 1297) in paragraph at lines 109--114
 []\OT1/cmr/m/n/10 Vidyashankar Sivaku-mar, Arindam Baner-jee, and
  []
 
-[9
-
-]) [10
+) [10
 
 ] [11
 
-]
 
-LaTeX Warning: Reference `' on page 12 undefined on input line 1823.
-
-[12
-
-] [13
-
-] [14] (./paper.aux)
-
-LaTeX Warning: There were undefined references.
-
+] (./paper.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 23116 strings out of 494564
- 563071 string characters out of 6172747
- 758521 words of memory out of 5000000
- 26022 multiletter control sequences out of 15000+600000
- 15876 words of font info for 57 fonts, out of 8000000 for 9000
+ 23094 strings out of 494564
+ 562742 string characters out of 6172747
+ 757521 words of memory out of 5000000
+ 26001 multiletter control sequences out of 15000+600000
+ 14799 words of font info for 54 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
- 55i,17n,76p,731b,692s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,16n,76p,731b,692s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/
-texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmsl9.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on paper.pdf (14 pages, 346597 bytes).
+f-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb>
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsl9.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmt
+i10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti7.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+
+Output written on paper.pdf (11 pages, 320713 bytes).
 PDF statistics:
- 154 PDF objects out of 1000 (max. 8388607)
- 111 compressed objects within 2 object streams
+ 140 PDF objects out of 1000 (max. 8388607)
+ 101 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

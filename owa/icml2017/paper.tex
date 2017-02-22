@@ -37,7 +37,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newtheorem{cor}{Corallary}
+\newtheorem{cor}{Corollary}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
 \newtheorem{assumption}{Condition}
@@ -411,7 +411,8 @@
 \twocolumn[
 %\icmltitle{Submission and Formatting Instructions for \\ 
            %International Conference on Machine Learning (ICML 2016)}
-\icmltitle{Communication-Efficient Distributed Maximum Likelihood Estimation with the Optimal Weighted Average}
+%\icmltitle{Communication-Efficient Distributed Empirical Risk Minimization}
+\icmltitle{Optimal Distributed Learning with Two Rounds of Communication} 
 
 \begin{icmlauthorlist}
 \icmlauthor{Aeiau Zzzz}{equal,to}
@@ -446,16 +447,26 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-We present a distributed algorithm for empirical risk minimization (ERM) with low communication cost.
-In our algorithm, each machine first independently solves the ERM problem on a subset of the data;
-a second round of optimization then finds the optimal weighted average of the parameter vectors.
-We show analytically that this method reduces both the bias and variance of the estimator when compared to the estimator trained by a single machine.
-(The straight average is known to reduce only the variance.)
-Our analysis relies on simple properties of sub-Gaussian random vectors.
-It is therefore simpler and more general than the analysis of similar distributed algorithms.
-Notably, we do not assume (as do all previous analyses) that the loss is convex or that any quantities are bounded.
-A major practical advantage of our method is that it is robust to the amount of regularization,
-which speeds up model selection.
+%We present a distributed algorithm for empirical risk minimization (ERM) with low communication cost.
+We present the OWA algorithm for distributed empirical risk minimization.
+%In this algorithm, each machine first independently solves the ERM problem on a subset of the data.
+%In this algorithm, each machine first independently calculates the parameter vector for its subset of the data.
+%Then a second round of optimization finds the optimal weighted average of these parameter vectors.
+OWA requires only two rounds of communication, and the total number of bits transfered is comparable to the naive averaging distributed estimator. 
+Given $m$ machines, each with $n$ data points, 
+the mean squared error of OWA shrinks at the rate of $O(1/mn)$, 
+which matches the optimal error rate of the single machine oracle.
+The analysis relies on simple properties of sub-Gaussian random vectors,
+and does not require the loss to be convex.
+%In our algorithm, each machine first independently solves the ERM problem on a subset of the data;
+%a second round of optimization then finds the optimal weighted average of the parameter vectors.
+%We show analytically that this method reduces both the bias and variance of the estimator when compared to the estimator trained by a single machine.
+%(The straight average is known to reduce only the variance.)
+%Our analysis relies on simple properties of sub-Gaussian random vectors.
+%It is therefore simpler and more general than the analysis of similar distributed algorithms.
+%Notably, we do not assume (as do all previous analyses) that the loss is convex or that any quantities are bounded.
+%A major practical advantage of our method is that it is robust to the amount of regularization,
+%which speeds up model selection.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -886,23 +897,28 @@ That is, $\lzero{\wstar} \le k$.
 Surprisingly, \citet{braverman2015communication} show that the minimax optimal error rate for least squares regression requires $\Omega(m\cdot\min\{n,d\})$ bits of communication (independent of $k$) even in the fully interactive setting.
 This is important because sparsity does not reduce the amount of communication required, and this bound does apply in our setting.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{ANALYSIS}
 \label{sec:anal}
 
 In this section, we analyze the statistical performance of our $\wowa$ estimator.
-As part of the analysis, we provide a novel proof of the statistical performance of $\wave$ with an easier to interpret constant factor.
-Our analysis is simpler and more general than previous analyses of distributed estimators.
-In particular, we do not assume that any random variables are bounded
-or that the loss is convex.
 
-\subsection{Conditions}
+%As part of the analysis, we provide a novel proof of the statistical performance of $\wave$ with an easier to interpret constant factor.
 
-The only condition of our analysis is that the estimation error has sub-Gaussian tails.
-We first state this condition formally,
-then explain why this condition is mild.
+\subsection{The Sub-Gaussian Tail Condition}
+
+The main condition of our analysis is that the estimation error has sub-Gaussian tails.
+%We first state this condition formally,
+%then explain why this condition is mild.
+As we will see, this is a mild condition that holds in most situations.
 
 \begin{defn}
-We say that a random vector $\x$ is \emph{sub-Gaussian} with variance proxy $\sigma^2$ if it obeys the following concentration bound.
+We say that a random vector $\x$ is \emph{sub-Gaussian} with variance proxy $\sigma^2$ if it obeys the following concentration bound:
+%\begin{equation}
+%\E\exp(\trans\alpha) \le \exp(\ltwo{\alpha}^2\sigma^2/2)
+%.
+%\end{equation}
 %Let $t>0$, then with probability at least $1-\exp(-\sigma^2t^2/2)$,
 %$
 %\ltwo{\x} < t
@@ -917,27 +933,18 @@ Note in particular that if $\x$ is a Gaussian random vector with mean $\mu$ and 
 then $\Sigma^{1/2}(\x-\mu)$ is sub-Gaussian with $\sigma^2=1$.
 Sub-Gaussian random vectors have recently become an important tool in the analysis of high dimensional statistics.
 \citet{vershynin2010introduction} provides an accessible tutorial of these results.
-We now state our condition.
+We are now ready to state our condition.
 
-\newtheorem*{sgt}{The Sub-Gaussian Tail (SGT) Condition}
-\begin{sgt}
+\newtheorem*{sgtc}{The Sub-Gaussian Tail (SGT) Condition}
+\begin{sgtc}
 Let $\what$ be an estimator trained on $n$ data points.
-%Let $t>0$ and $\sigma^2$ be a constant called the \emph{variance proxy}.
-%Then with probability at least $1-\exp(-\sigma^2t^2/2)$,
-%\begin{equation}
-%%\ltwobig{\I^{-1/2}_\wstar(\wmle_i-\wstar)} < \frac{t}{\sqrt n}
-%%\sqrt n \ltwobig{\I^{-1/2}_\wstar(\wmle_i-\E\wmle_i)} < t
-%\sqrt n \ltwobig{\I^{-1/2}_\wstar(\theta-\E\theta)} < t
-%,
-%\end{equation}
 Then the random vector
 \begin{equation}
-\Delta_\what = \sqrt{n}{\I^{1/2}_\wstar(\what-\E\what)}
+\Delta_\what = \sqrt{n}{\I^{1/2}\big(\wstar-\what\big)}
 \end{equation}
 is sub-Gaussian for some $\sigma^2$.
-Above, $\I_\wstar$ is the positive definite Fisher information matrix at the parameter vector's true value $\wstar$.
-%which is sub-Gaussian by assumption.
-\end{sgt}
+Above, $\I$ is the positive definite Fisher information matrix at the parameter vector's true value $\wstar$.
+\end{sgtc}
 
 %Sub-Gaussian distributions have recently become an important tool in the analysis of high dimensional statistics.
 %\cite{vershynin2010introduction} provides an accessible tutorial of these results.
@@ -948,26 +955,25 @@ very strong results are known.
 %this condition is known as root-$n$ consistency.
 %In this case,
 %The error $\Delta_\theta$ is exactly Gaussian.
-Theorem 7.5.2 of \citet{lehmann1999elements} is a simple example that shows $\Delta_\what$ is an isotropic centered Gaussian
+Theorem 7.5.2 of \citet{lehmann1999elements} is an elementary example that shows $\Delta_\what$ is an isotropic centered Gaussian
 (and hence sub-Gaussian).
-Lehman's theorem requires only that $\loss$ be three times differentiable,
-the data points be i.i.d.,
-and some mild identifiability conditions.
+Lehman's theorem requires only that $\loss$ be three times differentiable and that
+the data points be i.i.d..
 More sophisticated analyses show that the SGT Condition holds very generally in the asymptotic regime.
 For example \citet{spokoiny2012parametricestimation} shows that $\Delta_\what$ is normally distributed even when the data points are correlated.
 
-Similar results hold in the non-asymptotic case $n<\infty$,
-but known results are less strong.
-Most non-asymptotic results of this form require that the data points also be sub-Gaussian.
+Similar results hold in the non-asymptotic case $n<\infty$.
+The simplest results require that the data points also be sub-Gaussian.
 For example, \citet{negahban2009unified} considers the case when the data points are sub-Gaussian, the likelihood satisfies a ``restricted strong convexity condition,'' and the regularizer is decomposable.
 More recently, \citet{sivakumar2015beyond} showed the SGT Condition holds when the data are only sub-exponential.
 The strongest non-asymptotic results on the estimation error known to the authors are due to \citet{spokoiny2012parametricestimation}.
 Spokoiny does not place any distributional assumption on the data,
 but shows that the SGT Condition is satisfied only up to $t < O(n)$.
 
-Our analysis below requires that $\wmle_i$ satisfy the SGT Condition.
-This is strictly more general than the conditions in previous work.
-\citet{zhang2012communication} for example require that the parameter space $\Theta$ be bounded (in addition to other moment conditions).
+%Our analysis below requires that $\wmle_i$ satisfy the SGT Condition.
+%This is strictly more general than the conditions in previous work.
+We emphasize that the SGT condition is strictly more general than the conditions in previous work.
+For example, \citet{zhang2012communication} requires that the parameter space $\Theta$ be bounded (in addition to other moment conditions).
 A bounded parameter space automatically implies that $\wmle_i$ satisfies the SGT Condition because every bounded random variable is sub-Gaussian by definition.
 
 %In conclusion,
@@ -976,9 +982,63 @@ A bounded parameter space automatically implies that $\wmle_i$ satisfies the SGT
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Analysis of $\wave$}
+\subsection{Analyzing the ERM estimator}
 
-We provide a simple bound that shows that averaging improves the variance,
+As a warm up, we show how the SGT assumption gives us a useful concentration bound for the error of $\wmle$ (the ERM oracle estimator trained with all data on a single machine). 
+In subsequent sections, we will measure the quality of the distributed estimators by comparing their error to the error of $\wmle$.
+
+\begin{theorem}
+Assume that $\wmle$ satisfies the SGT condition.
+Let $t>0$.
+Then with probability at least $1-\exp(-t)$,
+\begin{equation}
+\ltwo{\wstar-\wmle} \le \sigma\sqrt{\frac{v_t}{mn}}
+.
+\end{equation}
+where
+\begin{equation}
+v_t =
+%\sigma^2
+%\left(
+\tr{\I^{-1}}
++ 2\sqrt{\tr \left({\I^{-2}}\right)t}
++ 2\ltwo{\I^{-1}}t
+%\right)
+\label{eq:vt}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By the definition of $\Delta_{\wmle}$, we can rewrite 
+\begin{equation}
+\ltwo{\wstar-\wmle} = (mn)^{-1/2}\ltwo{\I^{-1/2}\Delta_{\wmle}}
+.
+\end{equation}
+%Applying Theorem \ref{theorem:quadform} gives the stated result.
+%\end{proof}
+%The main tool we will use in our analyses is the following theorem due to \citet{hsu2012tail}.
+The result is then an immediate consequence of the following theorem due to \citet{hsu2012tail}.
+\begin{theorem}
+\label{theorem:quadform}
+Let $\x$ be a sub-Gaussian random variable with variance proxy $\sigma^2$ and $A$ be a positive semidefinite matrix.
+Let $t>0$.
+Then with probability at least $\exp(-t)$,
+\begin{equation}
+\ltwo{A^{1/2}\x}^2 \ge \sigma^2\left(\tr(A) + 2\sqrt{\tr{A^2}t} + 2\ltwo{A}t\right)
+%\prob{\ltwo{A^{1/2}\x}^2 \ge \sigma^2(\tr(A) + 2\sqrt{\tr{A^2}t} + 2\ltwo{A}t)}
+%\le
+%\exp(-t)
+\end{equation}
+\end{theorem}
+\end{proof}
+
+This theorem will be our main tool as we prove bounds on the distributed estimators.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Analyzing of the averaging estimator}
+
+We now provide a simple bound that shows that averaging improves the variance,
 but not the bias of an estimator.
 Similar bounds are well known (see Section \ref{sec:alt}),
 but our analysis has the following advantages:
@@ -986,98 +1046,359 @@ It requires fewer assumptions, has a simpler proof, and has an easy to interpret
 
 \begin{theorem}
 \label{thm:wave}
-Assume $\wmle_i$ satisfies the SGT Condition.
+Assume that the $\wmle_i$s satisfy the SGT Condition.
 Let $t>0$.
 Then with probability at least $1-\exp(-t)$,
 \begin{equation}
-\ltwo{\wstar-\wave} \le \ltwo{\wstar-\E\wmle_i} + \sqrt\frac{v_t}{mn}
+\ltwo{\wstar-\wave} \le \ltwo{\wstar-\E\wmle_i} + \sigma\sqrt\frac{v_t}{mn}
+\end{equation}
+where $v_t$ is defined as in Equation $\ref{eq:vt}$.
+\end{theorem}
+
+\begin{proof}
+We have by the triangle inequality that
+\begin{equation}
+\ltwo{\wstar-\wave} \le \ltwo{\wstar-\E\wave} + \ltwo{\E\wave-\wave}
+.
+\label{eq:biasvar}
+\end{equation}
+%The leftmost term above is the estimator's bias and the rightmost term the deviation.
+%We will bound each in turn.
+
+%It is straightforward to see that averaging does not improve the bias.
+The leftmost term in $\eqref{eq:biasvar}$ is the estimator's bias.
+By the linearity of expectation, we have that
+\begin{align}
+\E\wave
+&=
+\E\frac{1}{m}\sum_{i=1}^m\wmle_i
+%\\&=
+=
+\frac{1}{m}\sum_{i=1}^m\E\wmle_i
+=
+\E\wmle_i
+,
+\label{eq:expwave}
+\end{align}
+and so %the bias term
+$\ltwo{\wstar-\E\wave}
+=
+\ltwo{\wstar-\E\wmle_i}
+$.
+
+%The deviation term requires more work.
+%We first show that the deviation is the sum of subgaussian random variables.
+%The result will follow because this sum is also subgaussian.
+For the deviation term, we have that
+\begin{align}
+\ltwobig{\wave-\E\wave}
+&=
+\ltwobig{\frac{1}{m}\sum_{i=1}^m\wmle_i-\E\wave}
+\label{eq:var1}
+\\&=
+\frac{1}{m}\ltwobig{\sum_{i=1}^m\left(\wmle_i-\E\wmle_i\right)}
+%\\&=
+%\frac{1}{m\sqrt{n}}\ltwobig{\I^{-1/2}\sum_{i=1}^m\sqrt{n}\I^{1/2}\left(\wmle_i-\E\wmle_i\right)}
+\\&=
+\frac{1}{m\sqrt{n}}\ltwobig{\I^{-1/2}\sum_{i=1}^m\Delta_{\wmle_i}}
+\label{eq:var1}
+.
+\end{align}
+Notice that each of the $\Delta_{\wmle_i}$ are i.i.d.\ sub-Gaussian random vectors with variance proxy $\sigma^2$.
+The sum of $m$ sub-Gaussians is also sub-Gaussian with variance proxy $m\sigma^2$.
+(See the Appendix for a proof.)
+Therefore, applying Theorem \ref{theorem:quadform} gives the stated result.
+%Applying Theorem \ref{theorem:quadform} gives us
+%\begin{equation}
+%\prob{
+    %\ltwobig{\I^{-1/2}_\wstar\sum_{i=1}^m\Delta_{\wmle_i}} < \sqrt{m}\sigma\sqrt{v_t}
+%}
+%\ge 1-\exp(-t)
+%,
+%\end{equation}
+%where $v_t$ is defined as in Equation \ref{eq:vt}.
+%And so the variance of $\wave$ satisfies
+%\begin{equation}
+%\prob{
+%\ltwobig{\wave-\E\wave}
+%<
+%\sqrt\frac{v_t}{{mn}}
+%}
+%\ge 1-\exp(-t)
+%.
+%\label{eq:ct1}
+%\end{equation}
+%Substituting Equations \ref{eq:expwave} and \ref{eq:ct1} into Equation \ref{eq:biasvar} gives the stated result.
+\end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Analyzing the OWA variants}
+
+In this section, we provide concentration inequalities on the error of $\wowa$.
+Our main result shows that the mean error $\E\ltwo{\wowa-\wstar}$ decays at the optimal rate of $O(1/\sqrt{mn})$.
+To prove this result, we prove concentration inequalities similar to the previous sections.
+The concentration of $\ltwo{\wowa-\wstar}$ is significantly looser than the single machine estimate.
+
+
+\begin{proof}
+%Simplifying \eqref{eq:wowathm} gives us that 
+We have that with probability at most $\exp(-tm)$,
+\begin{align}
+%\prob{
+\ltwo{\wstar-\wowa} >
+\sqrt{\frac{v_t}{m\nowa}}
++
+\sqrt{\bigg(\frac{\qhi}{\qlo}\bigg)\bigg(\frac{v_{t}}{n}\bigg)} 
+%}
+%\le \exp(-tm)
+.
+\end{align}
+A change of variables substitution gives us
+\begin{equation}
+\prob{
+\ltwo{\wstar-\wowa} > s}
+\le \exp(-(\frac{s}{\sigma})^2\frac{mn}{\ltwo{\I^{-1}}})
+\end{equation}
+One of the properties of expectations of non-negative random variables is that
+\begin{align}
+\E\ltwo{\wstar-\wmle}
+&= 
+%\int_0^\infty \left(1-\prob{\ltwo{\wstar-\wmle} \le s}\right) ds
+\int_0^\infty \prob{\ltwo{\wstar-\wmle} > s} ds
+.
+\end{align}
+We will do a change of variables with 
+\begin{equation}
+s = \sqrt{\frac{v_t}{m\nowa}} 
++
+\sqrt{\bigg(\frac{\qhi}{\qlo}\bigg)\bigg(\frac{v_{t}}{n}\bigg)} 
+\end{equation}
+\end{proof}
+
+%The analysis of OWA is broken up into three steps.
+%We begin with a lemma stating that $\Wowa$ is a good subspace to optimize over in the second round.
+%This lemma is the most important part of our proof.
+%We then introduce a technical condition on the Hessian of the loss function.
+%Two theorems then combine the first lemma and the Hessian condition to bound the error of $\wowafull$ and $\wowa$.
+%
+%The main idea of our analysis is to show that $\Wowa$ is a good subspace to optimize over.
+%This idea is captured in the following lemma.
+%
+%The following lemma states that $\Wowa$ is a good subspace for the second round of optimization and is the most important part of our proof.
+
+\begin{lemma}
+\label{lemma:wwstar}
+Assume the $\wmle_i$s satisfy the SGT condition.
+Let $t>0$. 
+Then with probability at least $1-\exp(-t)$,
+\begin{equation}
+\min_{\w\in\Wowa}\ltwo{\w-\wstar} \le \sigma\sqrt{\frac{v_{t/m}}{n}}
+%\prob{\min_{\w\in\Wowa}\ltwo{\w-\wstar} \ge \sqrt{\frac{v_t}{n}} } \le \exp(-tm)
+.
 \end{equation}
 where
 \begin{equation}
-v_t =
-\sigma^2
+\label{eq:vtm}
+v_{t/m} =
+%\sigma^2
+%\left(
+\tr{\I^{-1}}
++ 2\sqrt{\tr \left({\I^{-2}}\right)\frac{t}{m}}
++ 2\ltwo{\I^{-1}}\frac{t}{m}
+%\right)
+.
+\end{equation}
+%Furthermore, let $\tilde d=\tr\I^{-1}/\ltwo{\I^{-1}}$ be a measure of the intrinsic dimensionality of the data.
+%Then if $t>3m\tilde d^2/2$, we have that with probability $1-\exp(-t)$,
+%%For $t>\frac{3m}{2}(\tr\I^{-1}/\ltwo{\I^{-1}})^2$, we have that with probability $1-\exp(-t)$,
+%\begin{equation}
+%\min_{\w\in\Wowa}\ltwo{\w-\wstar} \le \sigma\sqrt{\frac{2\ltwo{\I^{-1}}t}{mn}}
+%.
+%\end{equation}
+\end{lemma}
+
+%Before we prove this lemma, we should discuss its implications.
+%The variable $v_{t/m}$ controls the rate at which the tail of the random variable decays.
+%When the tail is large, the $2\ltwo{\I^{-1}}t/m$ term dominates.
+%Therefore the error rate grows as $O((mn)^{-1/2})$.
+
+\begin{proof}[Proof of Lemma \ref{lemma:wwstar}]
+We have that
+\begin{align}
+&\prob{\min_{\w\in\Wowa} \ltwo{\w-\wstar} \ge \sqrt{\frac{v_t}{n}}} 
+\\
+\le &
+\prob{\min_{i=[m]} \ltwo{\wmle_i-\wstar} \ge \sqrt{\frac{v_t}{n}}}
+\\
+= &
+\prob{\forall_{i\in[m]} \ltwo{\wmle_i-\wstar} \ge \sqrt{\frac{v_t}{n}}} 
+\\
+%= &
+%\prod_{i\in[m]}
+%\prob{\ltwo{\wmle_i-\wstar} \ge \sqrt{\frac{v_t}{n}} }
+%\\
+= &
+\left(\prob{\ltwo{\wmle_1-\wstar} \ge \sqrt{\frac{v_t}{n}}} \right)^m
+\\
+= &
 \left(
-\tr{\I^{-1}_{\wstar}}
-+ 2\sqrt{\tr \left({\I^{-2}_{\wstar}}\right)t}
-+ 2\ltwo{\I^{-1}_{\wstar}}t
-\right)
-\label{eq:vt}
+\prob{\ltwo{(n\I)^{-1/2}\Delta_{\wmle_1}} \ge \sqrt{\frac{v_t}{n}} }
+\right)^m
+\\
+= &
+\left(
+\prob{\ltwo{\I^{-1/2}\Delta_{\wmle_1}} \ge \sqrt{v_t} }
+\right)^m
+\\
+\le &
+\exp(-tm)
+.
+\end{align}
+\end{proof}
+
+\newtheorem*{cont}{The Hessian Condition}
+\begin{cont}
+For any vector $\w$ satisfying $\ltwo{\w}\le\ltwo{\wstar-\wowafull}$, we have that
+\begin{equation}
+\label{eq:hessiancondition}
+\qlo\ltwo{\w}^2 \le \Loss(\wstar+\w) - \Loss(\w) \le \qhi\ltwo{\w}^2
+\end{equation}
+where $\Loss(\w) = \sum_{(\x,y)\in Z}\loss(y;\trans\x\w)+\lambda\reg(\w)$.
+\end{cont}
+
+This condition is somewhat easier to understand in the asymptotic regime as $n\to\infty$.
+In this regime, we have that $\ltwo{\wstar-\wowafull}\to0$,
+so \eqref{eq:hessiancondition} is equivalent to requiring that the condition number of the Hessian $\nabla^2\Loss(\wstar)$ be $\qhi/\qlo$.
+
+
+\begin{theorem}
+\label{theorem:wowafull}
+Assume the Hessian Condition and that the $\wmle_i$s satisfy the SGT condition.
+Then we have that with probability at least $1-\exp(-tm)$, 
+\begin{equation}
+%\ltwo{\wowafull-\wstar} \le \sqrt{\frac{\qhi}{\qlo}}\ltwo{\proj{\Wowa}\wstar}
+%\ltwo{\wowafull-\wstar} \le \sqrt{\frac{\qhi}{\qlo}}\sqrt{\frac{v_t}{n}}
+\ltwo{\wowafull-\wstar} \le \sqrt{\bigg(\frac{\qhi}{\qlo}\bigg)\bigg(\frac{v_t}{n}\bigg)}
 \end{equation}
 \end{theorem}
 
-The proof is provided in Appendix A of the supplemental material.
-
-Notice that this reduction in variance is essentially optimal.
-If we assume that $\wmle$ satisfies the SGT condition
-(in most cases this follows from $\wmle_i$ satisfying the SGT condition),
-then we are assuming that the variance of $\wmle$ reduces at the same $O(1/\sqrt{mn})$ rate.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection {Analysis of $\wowa$}
-
-Unlike the $\wave$ estimator,
-$\wowa$ reduces both bias and variance.
-%The $m$ and $\nowa$ parameters act as ``knobs'' that let us trade off lower statistical error for higher communication cost.
-To simplify the presentation, in this section we present only an informal version of this result.
-The formal statement and proof are contained in the supplemental material.
-
-We begin our discussion by arguing that the parameter space $\Wowa$ is a good subspace to optimize over.
-Specifically, we bound the distance $\ltwo{\wstar-\proj{\W}\wstar}$,
-where $\proj{\W}$ denotes the orthogonal projection onto $\W$.
-
-\begin{lemma}
-\label{lem:proj}
-Assume $\wmle_i$ satisfies the SGT condition.
-With high probability, we have that
+\begin{proof}
+By the Hessian condition, we have that
+\begin{align}
+\qlo\ltwo{\wowafull-\wstar}^2
+&\le
+\Loss(\wowafull) - \Loss(\wstar)
+\\
+&\le
+\Loss(\proj{\Wowa}\wstar) - \Loss(\wstar)
+\\
+&\le
+\qhi\ltwo{\proj{\Wowa}\wstar}^2
+.
+\end{align}
+And so
 \begin{equation}
-\ltwo{\wstar-\proj\W\wstar}
-\le
-O\left(
-\sqrt{\left(1-\frac{m}{d}\right)}\ltwo{\wstar - \wave}
-\right)
+\ltwo{\wowafull-\wstar} \le \sqrt{\frac{\qhi}{\qlo}}\ltwo{\proj{\Wowa}\wstar}
 .
 \end{equation}
-\end{lemma}
+The result follows by Lemma \ref{lemma:wwstar}.
+\end{proof}
 
-The proof uses standard properties of projection matrices with sub-Gaussian columns.
-Due to space limitations, it is included in Appendix B of the supplement.
-
-Our main result is captured in the following informal theorem.
-\newtheorem*{theoreminf}{Theorem 2 (Informal)}
-\begin{theoreminf}
-With high probability, we have that
+\begin{cor}
+Assume the Hessian Condition and that the $\wmle_i$s satisfy the SGT condition.
+Then we have that
 \begin{equation}
-\nonumber
-\ltwo{\wstar-\wowa}
-\le
-O\!\left(\!\!
-    \sqrt{\frac{1}{m\nowa}}
-    +
-    \sqrt{\left(1-\frac{m}{d}\right)}\ltwo{\wstar-\wave}
+\E\ltwo{\wowafull-\wstar} \le
+%\bigg(\frac{e\sqrt{3\pi}}{2}\bigg)
+O\left(
+\sqrt{
+\bigg(\frac{\qhi}{\qlo}\bigg)
+\bigg(\frac{\tr{\I^{-1}}}{mn}\bigg)
+}
 \right)
-\label{eq:informal}
 \end{equation}
-\label{thm:informal}
-\end{theoreminf}
-\vspace{-0.25in}
-The rightmost term above captures the error of the optimal parameter vector constrained to $\W$.
-That is, if
-\begin{equation}
-\wowastar = \argmin_{\w\in\W} \int_{\X\times\Y} \left(\loss(y,\trans\x\w) + \lambda \reg(\w)\right) d(\x,y)
+\end{cor}
+
+\begin{proof}
+%A basic property of the expectation of non-negative random variables is that
+We have that
+\begin{align}
+\E\ltwo{\wowa-\wstar} 
+&= \int_0^\infty \prob{\ltwo{\wowa-\wstar}>s} ds
+\\
+&\le \int_0^\infty \exp(-tm) ds
+\label{eq:leinto}
 ,
+\end{align}
+where the relationship between $s$ and $t$ is given by
+\begin{equation}
+s = \sqrt{\bigg(\frac{\qhi}{\qlo}\bigg)\bigg(\frac{v_t}{n}\bigg)}
+.
 \end{equation}
-then the rightmost term is the error of $\ltwo{\wstar-\wowastar}$.
-Clearly, as $m \to d$, the space $\W \to \Theta$, so $\wowastar\to\wstar$, and $\ltwo{\wstar-\wowastar}\to 0$.
+Substituting for $v_t$ and rearranging gives us
+\begin{align}
+s^2mn\bigg(\frac{\qlo}{\qhi}\bigg) 
+&= \tr{\I^{-1}} + \sqrt{\tr{\I^{-2}t}} + \ltwo{\I^{-1}}t
+\\
+&\le (1+t)(\tr{\I^{-1}} + \sqrt{\tr{\I^{-2}}} + \ltwo{\I^{-1}})
+\\
+&\le 3(1+t)\tr{\I^{-1}}
+.
+\end{align}
+And so,
+\begin{equation}
+\label{eq:tge}
+t\ge
+\bigg(\frac{s^2mn}{3\tr{\I^{-1}}}\bigg)\bigg(\frac{\qlo}{\qhi}\bigg) -1
+\end{equation}
+Substituting \eqref{eq:tge} into \eqref{eq:leinto} and solving the integral gives the result.
+\end{proof}
 
-The leftmost term above captures the error due to using only $\nowa$ data points in the second round of optimization.
-That is, the leftmost term captures the error $\ltwo{\wowa-\wowastar}$.
-As $\nowa\to n$, this error approaches the error of the oracle estimator trained on all the data $\ltwo{\wstar-\wmle}=O(1/\sqrt{mn})$.
-By increasing $m$ and $\nowa$ our estimator is closer to the sequential oracle
-at the expense of a higher communication cost.
+\begin{theorem}
+\label{theorem:wowa}
+Assume the Hessian Condition and that both the $\wmle_i$s and $\alpha$ satisfy the SGT condition.
+Then,
+for all $t>0$, with probability at least $1-\exp(-t)$, 
+\begin{equation}
+\label{eq:wowathm}
+\ltwo{\wstar-\wowa} \le 
+\sqrt{\frac{v_t}{m\nowa}}
++
+\sqrt{\bigg(\frac{\qhi}{\qlo}\bigg)\bigg(\frac{v_{t/m}}{n}\bigg)} 
+\end{equation}
+\end{theorem}
 
+\begin{proof}[Proof of Theorem \ref{theorem:wowa}]
+We have by the triangle inequality that
+\begin{equation}
+\ltwo{\wowa-\wstar} \le \ltwo{\wowa-\wowafull} + \ltwo{\wowafull-\wstar}
+.
+\end{equation}
+Theorem \ref{theorem:wowafull} bounds the left term, 
+and the SGT condition combined with Theorem \ref{theorem:quadform} bounds the right term.
+\end{proof}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{EXPERIMENTS}
+\label{sec:exp}
+
+We evaluate OWA on two logistic regression tasks.
+The first task uses synthetic data.
+The second task uses real world ad-click data from the Tencent search engine.
+In each experiment, we compare our $\wowa$ estimator with four baseline estimators:
+the naive estimator using the data from only a single machine $\wmle_i$;
+the averaging estimator $\wave$;
+the bootstrap estimator $\wboot$;
+and the oracle estimator of all data trained on a single machine $\wmle$.
+The $\wboot$ estimator has a parameter $r$ that needs to be tuned.
+%We make an effort to present the $\wboot$ estimator in the best light possible.
+In all experiments we evaluate $\wboot$ with $r \in \{0.005,0.01,0.02,0.04,0.1,0.2\}$,
+which is a set recommended in the original paper \citep{zhang2012communication},
+and then report only the value of $r$ with highest true likelihood.
+Thus we are reporting an overly optimistic estimate of the performance of $\wboot$,
+and as we shall see our estimator $\wowa$ still tends to perform better.
 
 \begin{figure*}[t]
 %\begin{tikzpicture}
@@ -1178,35 +1499,6 @@ at the expense of a higher communication cost.
     }
 \label{fig:lambda}
 \end{figure*}
-
-\newpage
-
-%There are two differences between the formal and informal version of Theorem 2 worth highlighting.
-Notice that the formal version of Theorem 2 contains the term $\ltwo{\wowastar-\E\wowa}$, which does not appear in the informal version.
-This is the bias of the second round of optimization in the subspace $\Wowa$ due to $\nowa$ being finite.
-This bias will be less than the bias of the full problem because $\Wowa\subset\Theta$.
-As $m\to\infty$, $\wowastar\to\wstar$ and $\E\wowa\to\W\wmle$, so $\ltwo{\wowastar-\E\wowa}\to\ltwo{\wstar-\E\wmle}$.
-%Furthermore, this bias will reduce at the rate of $O(1/\sqrt{m\nowa})$ under standard assumptions.
-%The next difference is the application of the functions $\qlo$ and $\qhi$.
-
-\section{EXPERIMENTS}
-\label{sec:exp}
-
-We evaluate OWA on two logistic regression tasks.
-The first task uses synthetic data.
-The second task uses real world ad-click data from the Tencent search engine.
-In each experiment, we compare our $\wowa$ estimator with four baseline estimators:
-the naive estimator using the data from only a single machine $\wmle_i$;
-the averaging estimator $\wave$;
-the bootstrap estimator $\wboot$;
-and the oracle estimator of all data trained on a single machine $\wmle$.
-The $\wboot$ estimator has a parameter $r$ that needs to be tuned.
-%We make an effort to present the $\wboot$ estimator in the best light possible.
-In all experiments we evaluate $\wboot$ with $r \in \{0.005,0.01,0.02,0.04,0.1,0.2\}$,
-which is a set recommended in the original paper \citep{zhang2012communication},
-and then report only the value of $r$ with highest true likelihood.
-Thus we are reporting an overly optimistic estimate of the performance of $\wboot$,
-and as we shall see our estimator $\wowa$ still tends to perform better.
 
 \subsection{Synthetic Data}
 
@@ -1564,130 +1856,15 @@ As part of our analysis, we also provided a more general analysis of the averagi
 \clearpage
 
 \section*{Appendix A: Proof of Theorem 1}
-We have by the triangle inequality that
-\begin{equation}
-\ltwo{\wstar-\wave} \le \ltwo{\wstar-\E\wave} + \ltwo{\E\wave-\wave}
-.
-\label{eq:biasvar}
-\end{equation}
-The leftmost term above is the estimator's bias and the rightmost term the deviation.
-We will bound each in turn.
 
-\subsection*{Step 1: the bias}
-It is straightforward to see that averaging does not improve the bias.
-By the linearity of expectation, we have that
-\begin{align}
-\E\wave
-&=
-\E\frac{1}{m}\sum_{i=1}^m\wmle_i
-%\\&=
-=
-\frac{1}{m}\sum_{i=1}^m\E\wmle_i
-=
-\E\wmle_i
-,
-\label{eq:expwave}
-\end{align}
-and so the bias term
-$\ltwo{\wstar-\E\wave}
-=
-\ltwo{\wstar-\E\wmle_i}
-$.
-%In words, the bias of the combined averaging estimator is the same as the bias of the estimator on an individual machine.
 
-\subsection*{Step 2: the deviation}
-The deviation term requires more work.
-We first show that the deviation is the sum of subgaussian random variables.
-The result will follow because this sum is also subgaussian.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-We have that
-\begin{align}
-&\ltwobig{\wave-\E\wave}
-\\&=
-%\frac{1}{m}\sum_{i=1}^m\wmle_i-\E\wave
-%\\&=
-\ltwobig{\frac{1}{m}\sum_{i=1}^m\wmle_i-\E\wave}
-\label{eq:var1}
-\\&=
-\frac{1}{m}\ltwobig{\sum_{i=1}^m\left(\wmle_i-\E\wmle_i\right)}
-%\\&=
-%\frac{1}{m}\ltwobig{\sum_{i=1}^m\I^{-1/2}_\wstar\I^{1/2}_\wstar\left(\wmle_i-\E\wmle_i\right)}
-\\&=
-\frac{1}{m\sqrt{n}}\ltwobig{\I^{-1/2}_\wstar\sum_{i=1}^m\sqrt{n}\I^{1/2}_\wstar\left(\wmle_i-\E\wmle_i\right)}
-\\&=
-\frac{1}{m\sqrt{n}}\ltwobig{\I^{-1/2}_\wstar\sum_{i=1}^m\Delta_{\wmle_i}}
-\label{eq:var1}
-.
-\end{align}
-%Equation \ref{eq:var1} follows by multiplying inside the norm by $1=\sqrt{n}\I_{\wstar}^{1/2}\I_{\wstar}^{-1/2}/\sqrt{n}$ and applying the definition of $\Delta_{\wmle_i}$.
-Notice that each of the $\Delta_{\wmle_i}$ are i.i.d.\ sub-Gaussian random vectors with variance proxy $\sigma$.
-The sum of $m$ subgaussians is also subgaussian with variance proxy $\sqrt{m}\sigma$.
-%Substituting into Equation \ref{eq:var1} gives
-%\begin{equation}
-%\ltwobig{\wave-\E\wave}
-%\sim
-%\frac{1}{\sqrt{mn}}\ltwobig{\I^{1/2}_\wstar\Delta_{\wmle_1}}
-%.
-%\label{eq:var2}
-%\end{equation}
-%Our last step is to bound the norm on the right hand side of Equation \ref{eq:var2}.
-Theorem 2.1 from \citet{hsu2012tail} gives a bound on the norm of a positive semidefinite matrix times a sub-Gaussian random variable.
-Applying the theorem gives that %with probability at least $1-\exp(-t)$,
-\begin{equation}
-\prob{
-    \ltwobig{\I^{-1/2}_\wstar\sum_{i=1}^m\Delta_{\wmle_i}} < \sqrt{v_t}
-}
-\ge 1-\exp(-t)
-,
-\end{equation}
-%\begin{equation}
-%\prob{
-    %\ltwobig{\I^{-1/2}_\wstar\Delta_1} < \sqrt{v_t}
-%}
-%\ge 1-\exp(-t)
-%,
-%\end{equation}
-where $v_t$ is defined as in Equation \ref{eq:vt}.
-And so the variance of $\wave$ satisfies
-\begin{equation}
-\prob{
-\ltwobig{\wave-\E\wave}
-<
-\sqrt\frac{v_t}{{mn}}
-}
-\ge 1-\exp(-t)
-.
-\label{eq:ct1}
-\end{equation}
-%and so
-%\begin{equation}
-%\ltwo{\E\wave-\wave} \le \sqrt\frac{v_t}{nm}
-%\label{eq:ct1}
-%\end{equation}
-%where
-%\begin{equation}
-%\begin{aligned}
-%v_t'
-   %= \tr\left({\frac{1}{mn}\I^{-1}_{\wtave}}\right)
-%+ 2&\sqrt{\tr \left({\frac{1}{mn}\I^{-1}_{\wtave}}\right)^2t}&
-%\\+ 2\ltwo{\frac{1}{nm}\I^{-1}_{\wtave}}t&
-%\end{aligned}
-%\end{equation}
-%Then by the linearity of trace and scalability of norms,
-%\begin{equation}
-%v_t' =
-%\frac{1}{mn}\left(
-%\tr\I^{-1}_{\wtave}
-%+ 2\sqrt{\tr \I^{-2}_{\wtave}t}
-%+ 2\ltwo{\I^{-1}_{\wtave}}t
-%\right)
-%\label{eq:ct2}
-%\end{equation}
-Substituting Equations \ref{eq:expwave} and \ref{eq:ct1} into Equation \ref{eq:biasvar} gives the stated result.
+\section*{Appendix}
 
 \begin{lemma}
-Let $\x_1,...,\x_m$ be a sequence of i.i.d. subgaussian random vectors with variance proxy $\sigma$.
-Then the random vector $\sum_{i=1}^m \x_i$ is subgaussian with variance proxy $\sqrt{m}\sigma$.
+Let $\x_1,...,\x_m$ be a sequence of i.i.d. subgaussian random vectors with variance proxy $\sigma^2$.
+Then the random vector $\sum_{i=1}^m \x_i$ is subgaussian with variance proxy $m\sigma^2$.
 \end{lemma}
 
 \begin{proof}
@@ -1703,506 +1880,9 @@ The lemma follows from the following straightforward calculation of the moment g
 \\
 &\le \prod_{i=1}^m\exp(\ltwo{\alpha}^2\sigma^2/2)
 \\
-&= \exp(\ltwo{\alpha}^2 (\sqrt{m}\sigma)^2 /2)
+&= \exp(\ltwo{\alpha}^2 m\sigma^2 /2)
 \end{align}
 %Line \eqref{eq:varindep} above follows from
-\end{proof}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\clearpage
-\section*{Appendix B}
-
-\begin{lemma}
-\label{lemma:wwstar}
-Assume the $\wmle_i$s satisfy the SGT condition.
-Let $t>0$. Then,
-\begin{equation}
-\prob{\min_{\w\in\Wowa}\ltwo{\w-\wstar} \ge \sqrt{\frac{v_t}{n}} } \le \exp(-tm)
-.
-\end{equation}
-\end{lemma}
-
-\begin{proof}
-Straightforward calculations give us
-\begin{align}
-&\prob{\min_{\w\in\Wowa} \ltwo{\w-\wstar} \ge \sqrt{\frac{v_t}{n}}} 
-\\
-\le &
-\prob{\min_{i=[m]} \ltwo{\wmle_i-\wstar} \ge \sqrt{\frac{v_t}{n}}}
-\\
-= &
-\prob{\forall_{i\in[m]} \ltwo{\wmle_i-\wstar} \ge \sqrt{\frac{v_t}{n}}} 
-\\
-%= &
-%\prod_{i\in[m]}
-%\prob{\ltwo{\wmle_i-\wstar} \ge \sqrt{\frac{v_t}{n}} }
-%\\
-= &
-\left(\prob{\ltwo{\wmle_1-\wstar} \ge \sqrt{\frac{v_t}{n}}} \right)^m
-\\
-= &
-\left(
-\prob{\ltwo{(n\I)^{-1/2}\Delta_{\wmle_1}} \ge \sqrt{\frac{v_t}{n}} }
-\right)^m
-\\
-= &
-\left(
-\prob{\ltwo{\I^{-1/2}\Delta_{\wmle_1}} \ge \sqrt{v_t} }
-\right)^m
-\\
-\le &
-\exp(-tm)
-\end{align}
-\end{proof}
-
-\newtheorem*{cont}{The Hessian Condition}
-\begin{cont}
-For any vector $\alpha$ satisfying $\ltwo{\alpha}\le\ltwo{\wstar-\wowafull}$, we have that
-\begin{equation}
-\label{eq:hessiancondition}
-\qlo\ltwo{\alpha}^2 \le \Loss(\wstar+\alpha) - \Loss(\alpha) \le \qhi\ltwo{\alpha}^2
-.
-\end{equation}
-Note that as $n\to\infty$, $\ltwo{\wstar-\wowafull}\to0$.
-In this regime,  \eqref{eq:hessiancondition} is equivalent to requiring that the condition number of the Hessian $\nabla^2\Loss(\wstar)$ be $\qhi/\qlo$.
-\end{cont}
-
-\begin{theorem}
-\label{theorem:wowafull}
-Assume the Hessian Condition and that the $\wmle_i$s satisfy the SGT condition.
-Then we have that with probability at least $1-\exp(-tm)$, 
-\begin{equation}
-%\ltwo{\wowafull-\wstar} \le \sqrt{\frac{\qhi}{\qlo}}\ltwo{\proj{\Wowa}\wstar}
-%\ltwo{\wowafull-\wstar} \le \sqrt{\frac{\qhi}{\qlo}}\sqrt{\frac{v_t}{n}}
-\ltwo{\wowafull-\wstar} \le \sqrt{\bigg(\frac{\qhi}{\qlo}\bigg)\bigg(\frac{v_t}{n}\bigg)}
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-By the Hessian condition, we have that
-\begin{align}
-\qlo\ltwo{\wowafull-\wstar}^2
-&\le
-\Loss(\wowafull) - \Loss(\wstar)
-\\
-&\le
-\Loss(\proj{\Wowa}\wstar) - \Loss(\wstar)
-\\
-&\le
-\qhi\ltwo{\proj{\Wowa}\wstar}^2
-.
-\end{align}
-And so
-\begin{equation}
-\ltwo{\wowafull-\wstar} \le \sqrt{\frac{\qhi}{\qlo}}\ltwo{\proj{\Wowa}\wstar}
-.
-\end{equation}
-The result follows by Lemma \ref{lemma:wwstar}.
-\end{proof}
-
-\begin{theorem}
-\label{theorem:wowa}
-Assume the Hessian Condition and that both the $\wmle_i$s and $\alpha$ satisfy the SGT condition.
-Then we have that with probability at least $1-\exp(-tm)$, 
-\begin{equation}
-\ltwo{\wowa-\wstar} \le 
-\sqrt{\frac{v_t}{m\nowa}}
-+
-\sqrt{\bigg(\frac{\qhi}{\qlo}\bigg)\bigg(\frac{v_t}{n}\bigg)} 
-\end{equation}
-\end{theorem}
-
-\begin{proof}
-We have by the triangle inequality that
-\begin{equation}
-\ltwo{\wowa-\wstar} \le \ltwo{\wowa-\wowafull} + \ltwo{\wowafull-\wstar}
-.
-\end{equation}
-Theorem \ref{theorem:wowafull} bounds the left term, 
-and the SGT condition combined with Theorem \ref{} bounds the right term.
-\end{proof}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\clearpage
-\section*{Appendix B: Proof of Lemma 1}
-
-%\begin{lemma}
-%\label{lem:proj}
-%Assume the $\wmle_i$s satisfy the SGT condition.
-%Let $t>0$ and
-%\begin{equation}
-%\delta = 
-%\big(1-\exp((d-m)(-t+\ln(t+1)))\big)
-%.
-%\label{eq:delta}
-%\end{equation}
-%Then we have that with probability at least $\delta$,
-%\begin{equation}
-%\ltwo{\wstar-\proj\W\wstar}
-%\le
-%(t+1)\sqrt{\frac\smin\smax\left(1-\frac{m}{d}\right)}\ltwo{\wstar - \wave}
-%\end{equation}
-%where $\smin$ and $\smax$ are the minimum and maximum eigenvalues of $\I_\wstar^{-1}$.
-%\end{lemma}
-
-\begin{lemma}
-\label{lem:proj}
-Assume the $\wmle_i$s satisfy the SGT condition.
-Let $t>0$ and
-\begin{equation}
-\delta = 
-\big(1-\exp((d-m)(-t+\ln(t+1)))\big)
-\big(1-\exp(-t)\big)
-.
-\label{eq:delta}
-\end{equation}
-Then we have that with probability at least $\delta$,
-\begin{equation}
-\ltwo{\wstar-\proj\W\wstar}
-\le
-O\left(
-(t+1)\sqrt{\left(1-\frac{m}{d}\right)}\ltwo{\wstar - \wave}
-\right)
-.
-\end{equation}
-%where $\smin$ and $\smax$ are the minimum and maximum eigenvalues of $\I_\wstar^{-1}$.
-\end{lemma}
-The proof of lemma 1 is broken into three steps.
-
-\subsection*{Step 1: Decompose the distance}
-
-Define the space $\Gamma=\vecspan\{\wmle_i-\E\wave\}_{i=1}^m$.
-%Define the spaces 
-%%\begin{align}
-%$\Gamma_1 = \affspan\{\wmle_i-\E\wave\}_{i=1}^m$
-%and
-%%\\
-%$\Gamma =\vecspan\Gamma_1$
-%.
-%\end{align}
-Our proof strategy is to bound the distance $\ltwo{\wstar-\proj\Gamma\wstar}$ and then show that $\Gamma\approx\W$.
-Specifically, we have
-\begin{align}
-~~~~&\!\!\!\!\!\!\!\!\!\!\!\!\!%\!\!\!\!\!\!\!
-\ltwo{\wstar-\proj\W\wstar}
-\nonumber
-\\
-&=
-\ltwo{(\wstar-\wave) - (\proj\W\wstar - \wave)}
-%\nonumber
-\\
-&=
-\ltwo{(\wstar-\wave) - \proj\W(\wstar - \wave)}
-\label{eq:waveinW}
-\\
-&\le
-\ltwo{(\wstar-\wave) - \proj\W\proj\Gamma(\wstar - \wave)}
-\label{eq:addprojGamma}
-\\
-&\le
-\ltwo{(\wstar-\wave) - \proj\Gamma(\wstar-\wave)}
-\nonumber
-\\
-&~~~+
-\ltwo{\proj\Gamma(\wstar-\wave) - \proj\W\proj\Gamma(\wstar-\wave)}
-%\ltwo{\proj\Gamma(\wstar-\wave) - \proj\W(\wstar-\wave)}
-%\label{eq:gammatriangle}
-\\
-&=
-\ltwo{(I-\proj\Gamma)(\wstar - \wave)}
-\nonumber
-\\
-&~~~+
-\ltwo{(I-\proj\W)\proj\Gamma(\wstar - \wave)}
-.
-\label{eq:i-projW}
-\end{align}
-Equation \ref{eq:waveinW} follows because $\wave\in\W$;
-Equation \ref{eq:addprojGamma} by the definition of $\proj\W$;
-and Equation \ref{eq:i-projW} by the triangle inequality.
-%Recall that we defined $\matW$ to be the $d\times m$ matrix with $i$th column equal $\wmle_i$.
-%The column space of $\matW$ is $\W$.
-We now bound each of the terms in Equation \ref{eq:i-projW} separately,
-beginning with the leftmost.
-
-\subsection*{Step 2: Bounding the error of $(I-\proj{\Gamma})$}
-
-%We can write
-%\begin{equation}
-%\proj\Gamma = \Delta_{\wmle_i}
-%\end{equation}
-Define the matrix $G$ with $i$th column equal to the vector $(\wmle_i-\E\wmle_i)$.
-The column space of $G$ is $\Gamma$,
-and we have that
-%$\proj\Gamma=G\pinv G$.
-\begin{align}
-\proj\Gamma
-&=
-G\pinv G
-\\
-&= \I_\wstar^{-1/2}\bigg(\sqrt{n}\I_\wstar^{1/2}G\bigg)
-             \pinv{\bigg(\sqrt{n}\I_\wstar^{1/2}G\bigg)}
-   \I_\wstar^{1/2}
-,
-\label{eq:ggpinv}
-\end{align}
-where the superscript $\pinv{}$ denotes the Moore-Penrose pseudoinverse.
-The $i$th column of matrix $\sqrt{n}\I^{1/2}_{\wstar}G$ is equal to $\Delta_{\wmle_i}$ by definition.
-%
-%So the projection $\proj\W = \matW\pinv\matW$, where the superscript $\pinv{}$ is the Moore-Penrose pseudoinverse.
-%Define the matrix $\matV=\sqrt{n}I^{1/2}\matW$.
-%Then the columns of $\matV$ are sub-Gaussian by the SGT condition,
-%and we can write
-%\begin{equation}
-%\proj\W
-%= \I^{-1/2} \matV \pinv\matV \I^{1/2}
-%.
-%\label{eq:vvp}
-%\end{equation}
-Let $U\Sigma \trans V$ be the singular value decomposition of $\sqrt{n}\I^{1/2}_{\wstar}G$,
-where $U$ and $V$ are orthogonal matrices and $\Sigma$ is the diagonal matrix of singular values.
-%Substituting into Equation \ref{eq:ggpinv} gives
-Then we have that
-\begin{align}
-\proj\Gamma
-&= \I^{-1/2} (U\Sigma \trans V)\pinv{(U \Sigma \trans V)} \I^{1/2}
-\\
-&= \I^{-1/2} (U\Sigma \trans V)(V \pinv\Sigma \trans U) \I^{1/2}
-\\
-&= \I^{-1/2} U\Sigma \pinv\Sigma \trans U \I^{1/2}
-.
-\label{eq:vvp2}
-\end{align}
-%Substituting Equation \ref{eq:vvp2} into \ref{eq:i-projW} gives
-This implies that
-\begin{align}
-%~~~~~&\!\!\!\!\!\!\!\!\!\!\!\ltwo{\wstar-\proj\Gamma\wstar}
-~~~~~&\!\!\!\!\!\!\!\!\!\!\!\ltwo{(I-\proj\Gamma)(\wstar-\wave)}
-\nonumber
-\\
-&=
-\ltwo{(I-\I^{-1/2} U\Sigma \pinv\Sigma \trans U \I^{1/2})(\wstar - \wave)}
-\\
-&=
-\ltwo{\I^{-1/2} U(I-\Sigma \pinv\Sigma )\trans U \I^{1/2}(\wstar - \wave)}
-\\
-&\le
-\sqrt{\smin}\ltwo{U(I-\Sigma \pinv\Sigma )\trans U \I^{1/2}(\wstar - \wave)}
-\label{eq:fromdefsmin}
-\\
-&=
-\sqrt{\smin}\ltwo{(I-\Sigma \pinv\Sigma )\trans U \I^{1/2}(\wstar - \wave)}
-\label{eq:fromrotinvl2}
-.
-\end{align}
-Equation \ref{eq:fromdefsmin} follows from the definition of $\smin$ as the smallest eigenvector of $\I$,
-and Equation \ref{eq:fromrotinvl2} follows from the rotational invariance of the L2 norm.
-The matrix $(I-\Sigma\pinv\Sigma)$ contains 1s in the first $d-m$ diagonal entries, and zeros everywhere else.
-By the rotational invariance of sub-Gaussian distributions (Lemma 5.9 of Vershynin, 2011),
-$U$ and $V$ are distributed uniformly over the orthogonal group of matrices.
-%Because $U$ is distributed uniformly over the orthogonal group,
-Therefore the operator $(I-\Sigma\pinv\Sigma)\trans U$ projects a vector onto a subspace of dimension $d-m$ chosen uniformly at random.
-Lemma 2.2 from \citet{dasgupta2003elementary} provides a bound for this situation.
-The lemma states that for any vector $\x$, for all $t>0$, with probability at least $1-\exp((d-m)(-t+\ln (t+1)))$,
-\begin{align}
-\ltwo{(I-\Sigma\pinv\Sigma)\trans U \x} \le (t+1) \sqrt{1-\frac{m}{d}}
-.
-\label{eq:dasgupta}
-\end{align}
-%Substituting gives
-%Applying Equation \ref{eq:dasgupta} to \ref{eq:blurby} gives
-Setting $\x=\I^{1/2}(\wstar-\wave)$ gives
-\begin{align}
-~~~~~&\!\!\!\!\!\!\!\!\!\!\!\ltwo{(I-\proj\Gamma)(\wstar-\wave)}
-\nonumber
-\\
-&\le
-(t+1)\sqrt{\smin\left(1-\frac{m}{d}\right)}\ltwo{\I^{1/2}(\wstar - \wave)}
-\\
-&\le
-(t+1)\sqrt{\frac{\smin}{\smax}\left(1-\frac{m}{d}\right)}\ltwo{\wstar - \wave}
-,
-\end{align}
-which bounds the leftmost term of Equation \ref{eq:i-projW}.
-
-%%%%%%%%%%%%%%%%%%%%
-
-\subsection*{Step 3: Bounding the error of $(I-\proj{\Wowa})\proj{\Gamma}$}
-
-Recall that the set $\{\wmle_i-\E\wave\}_{i=1}^m$ is a basis for the space $\Gamma$.
-Therefore, we can write
-\begin{equation}
-\proj\Gamma(\wstar-\wave) = \sum_{i=1}^d \gamma_i(\wmle_i - \E\wave)
-\end{equation}
-for some set of $\gamma_i$s.
-Furthermore, because $\Gamma$ is an affine space,
-we have that $\sum_{i=1}^d\gamma_i=1$.
-Therefore, we get that
-\begin{align}
-&\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!
-\ltwo{(I-\proj\Wowa)\proj\Gamma(\wstar-\wave)}
-\\
-&= \ltwo{(I-\proj\Wowa)\sum_{i=1}^d \gamma_i(\wmle_i - \E\wave)}
-\\
-&= \ltwo{(I-\proj\Wowa)\sum_{i=1}^d \gamma_i\E\wave}
-\\
-&= \ltwo{(I-\proj\Wowa)\E\wave}
-%\\
-%&\le \max_{i=1...m} \ltwo{\wmle_i - \E\wave}
-.
-\end{align}
-The $\wmle_i$ vectors form a basis for $\Wowa$.
-Therefore, the minimum distance from $\E\wave$ to $\Wowa$ is upper bounded by the minimum distance from $\E\wave$ to any particular $\wmle_i$.
-In notation,
-\begin{align}
-\ltwo{(I-\proj\Wowa)\E\wave}
-&\le \min_{i=1...m} \ltwo{\wmle_i - \E\wave}
-\\
-&=   \frac{1}{\sqrt n} \min_{i=1...m} \ltwo{\I^{-1/2}\Delta_{\wmle_i}}
-\end{align}
-Theorem 2.1 from \citet{hsu2012tail} gives a bound on the norm of a positive semidefinite matrix times a sub-Gaussian random variable.
-Applying this bound to $\ltwo{\I^{-1/2}\Delta_{\wmle_i}}$ gives
-\begin{align}
-\prob{\ltwo{\I^{-1/2}\Delta_{\wmle_i}} \le \sqrt{v_t}} \ge 1 - \exp(-t)
-\end{align}
-where $v_t$ is defined as in Equation \ref{eq:vt}.
-This implies
-\begin{align}
-\prob{\min_{i=1...m} \ltwo{\I^{-1/2}\Delta_{\wmle_i}} \le \sqrt{v_t}} \ge 1 - \exp(-mt)
-%\prob{\ltwo{(I-\proj\Wowa)\E\wave} \le \sqrt{\frac{v_t}{n}}} \ge (1 - \exp(-t))^m
-\end{align}
-
-
-%Now we bound the rightmost term.
-%We have that
-%%\begin{align}
-%%\proj\Gamma(\wstar-\wave)
-%%&=
-%%\sum_{i=1}^m a_i (\wmle_i - \E\wmle_i)
-%%\\
-%%\proj\Gamma(\wstar-\wave)+\sum_{i=1}^m a_i(\E\wmle_i - \wave)
-%%&=
-%%\sum_{i=1}^m a_i (\wmle_i - \wave)
-%%\end{align}
-%\begin{align}
-%~~~~~~~~~~~~~~~~~&\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\ltwo{\proj\Gamma(\wstar-\wave)-\proj\W\proj\Gamma(\wstar-\wave)}
-%\nonumber
-%\\
-%&\le
-%\ltwo{\E\wmle_i-\wave}\ltwo{\proj\Gamma(\wstar-\wave)}
-%\\
-%&\le
-%\ltwo{\E\wmle_i-\wave}\ltwo{\wstar-\wave}
-%\\
-%&\le
-%\frac{v_t}{\sqrt{mn}}\ltwo{\wstar-\wave}
-%\end{align}
-%Substituting Equations 47 and 50 into 35 gives the stated result.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section*{Appendix B: Proof of Lemma 2}
-
-%Our next lemma bounds the error of $\wowa$ in terms of the error of other estimators whose error we know.
-Our next lemma shows that $\proj{\W}\wstar \approx \wowa$.
-%We introduce the following notation.
-
-\begin{lemma}
-Let $\qhi,\qlo : \mathbb{R}^+ \to \mathbb{R}^+$ be monotonically increasing functions such that for all points $\w\in\Theta$,
-\begin{align}
-F(\wstar) - F(\w) &\ge \qlo \left( \ltwo {\wstar - \w} \right)
-,
-\\
-F(\wstar) - F(\w) &\le \qhi \left( \ltwo {\wstar - \w} \right)
-.
-\end{align}
-Then we have that
-\begin{equation}
-\begin{aligned}
-\ltwo {\wstar-\wowa}
-&\le
-\ltwo{\wowastar-\wowa}
-\\
-&~~~+
-\qlo^{-1} \left(
-    \qhi \left( \ltwo {\wstar - \proj\W\wstar} \right)
-\right)
-.
-\label{eq:lemma2res}
-\end{aligned}
-\end{equation}
-\end{lemma}
-
-The proof of Lemma 2 is a straightforward application of the triangle inequality.
-It is contained in Appendix B of the supplement.
-We are now ready to state a formal version of the informal Theorem 2.
-
-By the triangle inequality, we have that
-\begin{align}
-\ltwo{\wstar-\wowa}
-\le
-\ltwo{\wowastar-\wowa}
-+
-\ltwo{\wstar-\wowastar}
-.
-\label{eq:wstarwowa}
-\end{align}
-We bound the right hand term as follows.
-By the definition of $\qhi$ and $\qlo$, we have
-\begin{align}
-\qlo \left( \ltwo {\wstar-\wowastar} \right)
-&\le F(\wstar) - F(\wowastar)
-\\
-&\le F(\wstar) - F(\proj\W\wstar)
-\\
-&\le \qhi \left( \ltwo {\wstar - \proj\W\wstar} \right)
-.
-\end{align}
-%and so
-%\begin{equation}
-%\ltwo {\wstar-\wowastar}
-%\le
-%\qlo^{-1} \left(
-    %\qhi \left( \ltwo {\wstar - \proj\W\wstar} \right)
-%\right)
-%.
-%\end{equation}
-%Applying Lemma \ref{lem:proj} gives the stated result.
-Applying $\qlo^{-1}$ to both sides and substituting into Equation \ref{eq:wstarwowa} gives the stated result.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newtheorem*{theoremformal}{Theorem 2 (Formal)}
-\begin{theoremformal}
-Assume that $\wmle_i$ and $\alpha$ satisfy the SGT condition.
-Let $t>0$ and
-\begin{equation}
-%\delta = 1-\exp((d-m)(-t+\ln(t+1)))
-\delta = (1-\exp((d-m)(-t+\ln(t+1))))(1-\exp(-t))
-.
-\end{equation}
-Then, with probability at least $\delta$,
-\begin{equation}
-\begin{aligned}
-&\ltwo{\wstar-\wowa}
-\\
-&\le
-%\ltwo{\wowastar-\wowa}
-\ltwo{\wowastar-\E\wowa}
-+ \sqrt{\frac{v_t}{m\nowa}}
-\\
-&+
-\qlo^{-1}\bigg(\qhi\bigg((t+1)\sqrt{\frac{\smin}{\smax}\left(1-\frac{m}{d}\right)}\ltwo{\wstar-\wave}\bigg)\bigg)
-\end{aligned}
-\end{equation}
-\end{theoremformal}
-
-\begin{proof}
-Bound the left term of Equation \ref{eq:lemma2res} using the procedure we used for Theorem 1.
-Then use Lemma 1 to bound $\ltwo{\wstar-\proj\W\wstar}$ in the right term.
-%Then use Lemma 1 to bound the rightmost term.
 \end{proof}
 
 \end{document}
