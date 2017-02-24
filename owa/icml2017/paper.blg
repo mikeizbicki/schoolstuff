@@ -3,56 +3,46 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: paper.aux
 The style file: plainnat.bst
 Database file #1: paper.bib
-Repeated entry---line 149 of file paper.bib
- : @inproceedings{zhang2012communication
- :                                      ,
-I'm skipping whatever remains of this entry
-You're missing a field name---line 177 of file paper.bib
- :   
- :   %url={https://github.com/JohnLangford/vowpal_wabbit}
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
 Warning--empty journal in kddcup2012
-Warning--empty publisher in vershynin2010introduction
-You've used 22 entries,
+You've used 19 entries,
             2773 wiz_defined-function locations,
-            707 strings with 8965 characters,
-and the built_in function-call counts, 12753 in all, are:
-= -- 1125
-> -- 803
-< -- 19
-+ -- 271
-- -- 248
-* -- 1003
-:= -- 1867
-add.period$ -- 68
-call.type$ -- 22
-change.case$ -- 146
-chr.to.int$ -- 21
-cite$ -- 46
-duplicate$ -- 593
-empty$ -- 992
-format.name$ -- 278
-if$ -- 2745
+            689 strings with 8355 characters,
+and the built_in function-call counts, 11183 in all, are:
+= -- 986
+> -- 717
+< -- 16
++ -- 242
+- -- 222
+* -- 880
+:= -- 1636
+add.period$ -- 58
+call.type$ -- 19
+change.case$ -- 130
+chr.to.int$ -- 18
+cite$ -- 39
+duplicate$ -- 512
+empty$ -- 856
+format.name$ -- 249
+if$ -- 2405
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 23
-newline$ -- 118
-num.names$ -- 90
-pop$ -- 333
+missing$ -- 20
+newline$ -- 103
+num.names$ -- 76
+pop$ -- 295
 preamble$ -- 1
-purify$ -- 125
+purify$ -- 112
 quote$ -- 0
-skip$ -- 503
+skip$ -- 443
 stack$ -- 0
-substring$ -- 528
-swap$ -- 141
-text.length$ -- 11
+substring$ -- 469
+swap$ -- 125
+text.length$ -- 9
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 237
-warning$ -- 2
-while$ -- 105
+type$ -- 204
+warning$ -- 1
+while$ -- 90
 width$ -- 0
-write$ -- 286
-(There were 2 error messages)
+write$ -- 247
+(There was 1 warning)
